@@ -12,7 +12,7 @@ public class FalconsTeleOp extends LinearOpMode {
     //Initialize motors, servos, sensors, imus, etc.
     DcMotorEx motorLF, motorRF, motorLB, motorRB, motorLaunch, motorRamp1, motorRamp2, motorIntake;
     Servo servoTrigger;
-    double presentvoltage;
+    double presentvoltage, reverse;
     boolean lastB, lastA, launchRunFar, launchRunClose, lastRB, intakeRun;
     VoltageSensor voltageSensor;
     public static MecanumDrive.Params DRIVE_PARAMS = new MecanumDrive.Params();
@@ -83,8 +83,8 @@ public class FalconsTeleOp extends LinearOpMode {
             double powerAng = 0.0;  // Desired power for turning          (-1 to 1)
 
             // Set the desired powers based on joystick inputs (-1 to 1)
-            powerX = gamepad1.left_stick_x;
-            powerY = -gamepad1.left_stick_y;
+            powerX = gamepad1.left_stick_x * reverse;
+            powerY = -gamepad1.left_stick_y * reverse;
             powerAng = -gamepad1.right_stick_x;
 
             // Perform vector math to determine the desired powers for each wheel
@@ -112,9 +112,15 @@ public class FalconsTeleOp extends LinearOpMode {
 
             presentvoltage = voltageSensor.getVoltage();
 
+            if (gamepad1.right_trigger > 0.25) {
+                reverse = -1;
+            } else {
+                reverse = 1;
+            }
+
             if (gamepad2.b && !lastB) {
                 if (!launchRunFar) {
-                    motorLaunch.setPower(0.9575*13.5/presentvoltage);
+                    motorLaunch.setPower(0.955*13.5/presentvoltage);
                     launchRunFar = true;
                 } else {
                     motorLaunch.setPower(0);

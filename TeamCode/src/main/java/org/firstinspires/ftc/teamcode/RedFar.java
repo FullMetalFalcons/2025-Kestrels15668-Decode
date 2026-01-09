@@ -12,6 +12,7 @@ import com.acmerobotics.roadrunner.Vector2d;
 import com.acmerobotics.roadrunner.ftc.Actions;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.VoltageSensor;
 
 /*
   Wireless Code Download: Terminal --> "adb connect 192.168.43.1:5555"
@@ -26,7 +27,9 @@ public class RedFar extends LinearOpMode {
         KestrelIntake intake = new KestrelIntake(hardwareMap, telemetry);
 
         Action preload;
-        Action wait;
+        Action wait1;
+        Action wait2;
+        Action wait3;
         Action goto1;
         Action pickup1;
         Action launch1;
@@ -36,8 +39,16 @@ public class RedFar extends LinearOpMode {
                 .turn(Math.toRadians(-26.56))
             .build();
 
-        wait = drive.actionBuilder(initialPose)
+        wait1 = drive.actionBuilder(initialPose)
                 .waitSeconds(1)
+                .build();
+
+        wait2 = drive.actionBuilder(initialPose)
+                .waitSeconds(2)
+                .build();
+
+        wait3 = drive.actionBuilder(initialPose)
+                .waitSeconds(3)
             .build();
 
         goto1 = drive.actionBuilder(initialPose)
@@ -62,32 +73,36 @@ public class RedFar extends LinearOpMode {
                 new SequentialAction(
                         preload,
                         new ParallelAction(
-                                intake.setOutake(0.95),
+                                intake.setOutake(0.955),
                                 intake.setTrigger(0.49)
                         ),
-                        wait,
+                        wait3,
                         intake.setIntake(0.6),
-                        wait,
+                        wait3,
                         new ParallelAction(
                                 intake.setTrigger(0.4),
                                 intake.setOutake(0),
                                 intake.setIntake(0)
                         ),
+                        wait1,
 
                         goto1,
+                        wait2,
                         new ParallelAction(
                                 intake.setIntake(0.8),
                                 pickup1
                         ),
                         intake.setIntake(0),
+                        wait2,
                         launch1,
+                        wait2,
                         new ParallelAction(
-                                intake.setOutake(0.95),
+                                intake.setOutake(0.955),
                                 intake.setTrigger(0.49)
                         ),
-                        wait,
+                        wait3,
                         intake.setIntake(0.6),
-                        wait,
+                        wait3,
                         new ParallelAction(
                                 intake.setTrigger(0.4),
                                 intake.setOutake(0),
