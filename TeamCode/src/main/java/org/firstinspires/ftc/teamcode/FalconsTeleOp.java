@@ -4,14 +4,17 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.hardware.VoltageSensor;
 
 @TeleOp
 public class FalconsTeleOp extends LinearOpMode {
     //Initialize motors, servos, sensors, imus, etc.
-    DcMotorEx motorLF, motorRF, motorLB, motorRB;
-    // TODO: Uncomment the following line if you are using servos
-    //Servo Claw;
-
+    DcMotorEx motorLF, motorRF, motorLB, motorRB, motorLaunch, motorRamp1, motorRamp2, motorIntake;
+    Servo servoTrigger;
+    double presentvoltage;
+    boolean lastB, lastA, launchRunFar, launchRunClose, lastRB, intakeRun;
+    VoltageSensor voltageSensor;
     public static MecanumDrive.Params DRIVE_PARAMS = new MecanumDrive.Params();
 
 
@@ -21,13 +24,22 @@ public class FalconsTeleOp extends LinearOpMode {
         //Define those motors and stuff
         //The string should be the name on the Driver Hub
         // Set the strings at the top of the MecanumDrive file; they are shared between TeleOp and Autonomous
+        voltageSensor = hardwareMap.get(VoltageSensor.class, "Control Hub");
+
         motorLF = (DcMotorEx) hardwareMap.dcMotor.get(DRIVE_PARAMS.leftFrontDriveName);
         motorLB = (DcMotorEx) hardwareMap.dcMotor.get(DRIVE_PARAMS.leftBackDriveName);
         motorRF = (DcMotorEx) hardwareMap.dcMotor.get(DRIVE_PARAMS.rightFrontDriveName);
         motorRB = (DcMotorEx) hardwareMap.dcMotor.get(DRIVE_PARAMS.rightBackDriveName);
 
+        motorLaunch = (DcMotorEx) hardwareMap.dcMotor.get("Launch1");
+        motorRamp1 = (DcMotorEx) hardwareMap.dcMotor.get("Intake1");
+        motorRamp2 = (DcMotorEx) hardwareMap.dcMotor.get("Intake2");
+        motorIntake = (DcMotorEx) hardwareMap.dcMotor.get("intake");
+
         // Use the following line as a template for defining new servos
         //Claw = (Servo) hardwareMap.servo.get("claw");
+        servoTrigger = (Servo) hardwareMap.servo.get("trigga");
+
 
         //Set them to the correct modes
         //This reverses the motor direction
@@ -48,6 +60,8 @@ public class FalconsTeleOp extends LinearOpMode {
         motorLB.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
         motorRF.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
         motorRB.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
+        motorLaunch.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
 
         //This lets you look at encoder values while the OpMode is active
         //If you have a STOP_AND_RESET_ENCODER, make sure to put this below it
@@ -96,6 +110,57 @@ public class FalconsTeleOp extends LinearOpMode {
             motorRF.setPower(powerRF);
             motorRB.setPower(powerRB);
 
+            presentvoltage = voltageSensor.getVoltage();
+
+            if (gamepad2.b && !lastB) {
+                if (!launchRunFar) {
+                    motorLaunch.setPower(0.9575*13.5/presentvoltage);
+                    launchRunFar = true;
+                } else {
+                    motorLaunch.setPower(0);
+                    launchRunFar = false;
+                }
+            } else if (gamepad2.a && !lastA) {
+                if (!launchRunClose) {
+                    motorLaunch.setPower(0.7*13.5/presentvoltage);
+                    launchRunClose = true;
+                } else {
+                    motorLaunch.setPower(0);
+                    launchRunClose = false;
+                }
+            }
+            lastB = gamepad2.b;
+            lastA = gamepad2.a;
+
+            if (gamepad1.right_bumper && !lastRB) {
+                intakeRun = !intakeRun;
+            }
+
+            lastRB = gamepad1.right_bumper;
+
+            if (intakeRun) {
+                motorRamp1.setPower(0.8);
+                motorRamp2.setPower(-0.8);
+                motorIntake.setPower(1);
+            } else if (gamepad2.right_bumper) {
+                motorRamp1.setPower(0.6);
+                motorRamp2.setPower(-0.6);
+                motorIntake.setPower(1);
+            } else if (gamepad1.left_bumper || gamepad2.left_bumper) {
+                motorRamp1.setPower(-0.5);
+                motorRamp2.setPower(0.5);
+                motorIntake.setPower(1);
+            } else {
+                motorRamp1.setPower(0);
+                motorRamp2.setPower(0);
+                motorIntake.setPower(0);
+            }
+            if (gamepad2.right_trigger > 0.25) {
+                servoTrigger.setPosition(0.4);
+            } else {
+                servoTrigger.setPosition(0.49);
+            }
+
 
 
             // If you want to print information to the Driver Station, use telemetry
@@ -103,8 +168,9 @@ public class FalconsTeleOp extends LinearOpMode {
             //     the variable that you list after the comma will be displayed next to the label
             // update() only needs to be run once and will "push" all of the added data
 
-            //telemetry.addData("Label", "Information");
-            //telemetry.update();
+            telemetry.addData("servoPosition", servoTrigger.getPosition());
+            telemetry.addData("voltage", voltageSensor.getVoltage());
+            telemetry.update();
 
         } // opModeActive loop ends
     }
