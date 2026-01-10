@@ -10,6 +10,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.VoltageSensor;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
@@ -19,6 +20,8 @@ public class KestrelIntake {
 
     public DcMotorEx motorLaunch1, motorRamp1, motorRamp2, motorIntake;
     public Servo servoTrigger;
+    public VoltageSensor voltageSensor;
+    double voltage;
 
     public KestrelIntake(HardwareMap hardwareMap, Telemetry telemetry) {
         motorLaunch1 = (DcMotorEx) hardwareMap.dcMotor.get("Launch1");
@@ -27,6 +30,9 @@ public class KestrelIntake {
         motorIntake = (DcMotorEx) hardwareMap.dcMotor.get("intake");
 
         servoTrigger = (Servo) hardwareMap.servo.get("trigga");
+        voltageSensor = hardwareMap.get(VoltageSensor.class, "Control Hub");
+
+        motorLaunch1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
     }
 
     public class SetOutake implements Action {
@@ -37,9 +43,8 @@ public class KestrelIntake {
         }
         @Override
         public boolean run (@NonNull TelemetryPacket packet) {
-            //motorRamp1.setPower(-desiredOutakeSpeed);
-            //motorRamp2.setPower(desiredOutakeSpeed);
-            motorLaunch1.setPower(desiredOutakeSpeed);
+            voltage = voltageSensor.getVoltage();
+            motorLaunch1.setPower(desiredOutakeSpeed*13.5/voltage);
             return false;
         }
     }
@@ -71,8 +76,8 @@ public class KestrelIntake {
         }
         @Override
         public boolean run(@NonNull TelemetryPacket packet) {
-            motorRamp1.setPower(-desiredIntakeSpeed);
-            motorRamp2.setPower(desiredIntakeSpeed);
+            motorRamp1.setPower(desiredIntakeSpeed);
+            motorRamp2.setPower(-desiredIntakeSpeed);
             motorIntake.setPower(desiredIntakeSpeed);
             return false;
         }

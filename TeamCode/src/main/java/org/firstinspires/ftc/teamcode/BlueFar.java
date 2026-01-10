@@ -4,6 +4,7 @@ package org.firstinspires.ftc.teamcode;
 
 import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.roadrunner.Action;
+import com.acmerobotics.roadrunner.ParallelAction;
 import com.acmerobotics.roadrunner.Pose2d;
 import com.acmerobotics.roadrunner.SequentialAction;
 import com.acmerobotics.roadrunner.SleepAction;
@@ -11,6 +12,7 @@ import com.acmerobotics.roadrunner.Vector2d;
 import com.acmerobotics.roadrunner.ftc.Actions;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.VoltageSensor;
 
 /*
   Wireless Code Download: Terminal --> "adb connect 192.168.43.1:5555"
@@ -18,7 +20,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 @Config
 @Autonomous
-public class RedFar extends LinearOpMode {
+public class BlueFar extends LinearOpMode {
     public void runOpMode() {
         Pose2d initialPose = new Pose2d(0,0,Math.toRadians(-90));
         MecanumDrive drive = new MecanumDrive(hardwareMap, initialPose);
@@ -32,28 +34,28 @@ public class RedFar extends LinearOpMode {
 
         preload = drive.actionBuilder(initialPose)
                 .strafeTo(new Vector2d(0,4))
-                .turn(Math.toRadians(-24))
+                .turn(Math.toRadians(24))
             .build();
 
-        goto1 = drive.actionBuilder(new Pose2d(0,4,Math.toRadians(-90-24)))
-                .turn(Math.toRadians(24))
+        goto1 = drive.actionBuilder(new Pose2d(0,4,Math.toRadians(-90+24)))
+                .turn(Math.toRadians(-24))
                 .waitSeconds(.25)
                 .strafeTo(new Vector2d(0,28))
                 .turn(Math.toRadians(-90))
             .build();
 
-        pickup1 = drive.actionBuilder(new Pose2d(0,28,Math.toRadians(0)))
-                .strafeTo(new Vector2d(38,28))
+        pickup1 = drive.actionBuilder(new Pose2d(0,28,Math.toRadians(180)))
+                .strafeTo(new Vector2d(-38,28))
             .build();
 
-        launch1 = drive.actionBuilder(new Pose2d(38,28,Math.toRadians(0)))
-                .strafeTo(new Vector2d(0,4))
-                .turn(Math.toRadians(-90-23))
+        launch1 = drive.actionBuilder(new Pose2d(-38,28,Math.toRadians(180)))
+                .strafeTo(new Vector2d(0,24+28))
+                .turn(Math.toRadians(90+23))
             .build();
 
-        park = drive.actionBuilder(new Pose2d(0,4,Math.toRadians(-90-23)))
-                .turn(Math.toRadians(23))
-                .strafeTo(new Vector2d(0,28))
+        park = drive.actionBuilder(new Pose2d(0,52,Math.toRadians(-90+24)))
+                .turn(Math.toRadians(-23))
+                .strafeTo(new Vector2d(0,24+52))
             .build();
 
         waitForStart();

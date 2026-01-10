@@ -4,6 +4,7 @@ package org.firstinspires.ftc.teamcode;
 
 import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.roadrunner.Action;
+import com.acmerobotics.roadrunner.ParallelAction;
 import com.acmerobotics.roadrunner.Pose2d;
 import com.acmerobotics.roadrunner.SequentialAction;
 import com.acmerobotics.roadrunner.SleepAction;
@@ -18,7 +19,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 @Config
 @Autonomous
-public class RedFar extends LinearOpMode {
+public class BlueClose extends LinearOpMode {
     public void runOpMode() {
         Pose2d initialPose = new Pose2d(0,0,Math.toRadians(-90));
         MecanumDrive drive = new MecanumDrive(hardwareMap, initialPose);
@@ -31,30 +32,27 @@ public class RedFar extends LinearOpMode {
         Action park;
 
         preload = drive.actionBuilder(initialPose)
-                .strafeTo(new Vector2d(0,4))
-                .turn(Math.toRadians(-24))
-            .build();
+                .strafeTo(new Vector2d(0,-50))
+                .turn(Math.toRadians(45))
+                .build();
 
-        goto1 = drive.actionBuilder(new Pose2d(0,4,Math.toRadians(-90-24)))
-                .turn(Math.toRadians(24))
-                .waitSeconds(.25)
-                .strafeTo(new Vector2d(0,28))
-                .turn(Math.toRadians(-90))
-            .build();
+        goto1 = drive.actionBuilder(new Pose2d(0,-50,Math.toRadians(-90+45)))
+                .turn(Math.toRadians(-45-90))
+                .build();
 
-        pickup1 = drive.actionBuilder(new Pose2d(0,28,Math.toRadians(0)))
-                .strafeTo(new Vector2d(38,28))
-            .build();
+        pickup1 = drive.actionBuilder(new Pose2d(0,-50,Math.toRadians(180)))
+                .strafeTo(new Vector2d(-38,-50))
+                .build();
 
-        launch1 = drive.actionBuilder(new Pose2d(38,28,Math.toRadians(0)))
-                .strafeTo(new Vector2d(0,4))
-                .turn(Math.toRadians(-90-23))
-            .build();
+        launch1 = drive.actionBuilder(new Pose2d(-38,-50,Math.toRadians(180)))
+                .strafeTo(new Vector2d(0,-50))
+                .turn(Math.toRadians(90+45))
+                .build();
 
-        park = drive.actionBuilder(new Pose2d(0,4,Math.toRadians(-90-23)))
-                .turn(Math.toRadians(23))
-                .strafeTo(new Vector2d(0,28))
-            .build();
+        park = drive.actionBuilder(new Pose2d(0,-50,Math.toRadians(-90+45)))
+                .turn(Math.toRadians(-45))
+                .strafeTo(new Vector2d(0,-74))
+                .build();
 
         waitForStart();
         if (isStopRequested()) return;
@@ -63,7 +61,7 @@ public class RedFar extends LinearOpMode {
                 new SequentialAction(
                         preload,
                         intake.setTrigger(0.4),
-                        intake.setOutake(0.955), //13.55V
+                        intake.setOutake(0.75),
                         new SleepAction(1.25),
                         intake.setIntake(0.6),
                         new SleepAction(1.5),
@@ -81,16 +79,16 @@ public class RedFar extends LinearOpMode {
                         new SleepAction(0.1),
                         intake.setIntake(0),
                         intake.setTrigger(0.4),
-                        intake.setOutake(0.955),
+                        intake.setOutake(0.75),
                         new SleepAction(1.25),
                         intake.setIntake(0.6),
                         new SleepAction(1.5),
                         intake.setTrigger(0.49),
                         intake.setOutake(0),
                         intake.setIntake(0),
-                        new SleepAction(2),
 
                         park
+
                 )
         );
 

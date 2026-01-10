@@ -83,9 +83,9 @@ public class FalconsTeleOp extends LinearOpMode {
             double powerAng = 0.0;  // Desired power for turning          (-1 to 1)
 
             // Set the desired powers based on joystick inputs (-1 to 1)
-            powerX = gamepad1.left_stick_x * reverse;
-            powerY = -gamepad1.left_stick_y * reverse;
-            powerAng = -gamepad1.right_stick_x;
+            powerX = gamepad1.left_stick_x * reverse * 0.8;
+            powerY = -gamepad1.left_stick_y * reverse * 0.8;
+            powerAng = -gamepad1.right_stick_x * 0.6;
 
             // Perform vector math to determine the desired powers for each wheel
             double powerLF = powerX + powerY - powerAng;
@@ -110,12 +110,16 @@ public class FalconsTeleOp extends LinearOpMode {
             motorRF.setPower(powerRF);
             motorRB.setPower(powerRB);
 
-            presentvoltage = voltageSensor.getVoltage();
+            //presentvoltage = voltageSensor.getVoltage();
 
             if (gamepad1.right_trigger > 0.25) {
                 reverse = -1;
             } else {
                 reverse = 1;
+            }
+
+            if (!launchRunClose && !launchRunFar) {
+                presentvoltage = voltageSensor.getVoltage();
             }
 
             if (gamepad2.b && !lastB) {
@@ -138,13 +142,13 @@ public class FalconsTeleOp extends LinearOpMode {
             lastB = gamepad2.b;
             lastA = gamepad2.a;
 
-            if (gamepad1.right_bumper && !lastRB) {
+            /*if (gamepad1.right_bumper && !lastRB) {
                 intakeRun = !intakeRun;
             }
 
-            lastRB = gamepad1.right_bumper;
+            lastRB = gamepad1.right_bumper;*/
 
-            if (intakeRun) {
+            if (/*intakeRun*/ gamepad1.right_bumper) {
                 motorRamp1.setPower(0.8);
                 motorRamp2.setPower(-0.8);
                 motorIntake.setPower(1);
@@ -175,7 +179,7 @@ public class FalconsTeleOp extends LinearOpMode {
             // update() only needs to be run once and will "push" all of the added data
 
             telemetry.addData("servoPosition", servoTrigger.getPosition());
-            telemetry.addData("voltage", voltageSensor.getVoltage());
+            telemetry.addData("voltage", presentvoltage);
             telemetry.update();
 
         } // opModeActive loop ends
