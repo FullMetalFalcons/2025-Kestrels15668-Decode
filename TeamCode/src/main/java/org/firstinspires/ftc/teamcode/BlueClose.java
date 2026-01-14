@@ -21,7 +21,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 @Autonomous
 public class BlueClose extends LinearOpMode {
     public void runOpMode() {
-        Pose2d initialPose = new Pose2d(0,0,Math.toRadians(-90));
+        Pose2d initialPose = new Pose2d(26,0,Math.toRadians(-90));
         MecanumDrive drive = new MecanumDrive(hardwareMap, initialPose);
         KestrelIntake intake = new KestrelIntake(hardwareMap, telemetry);
 
@@ -61,7 +61,7 @@ public class BlueClose extends LinearOpMode {
                 new SequentialAction(
                         preload,
                         intake.setTrigger(0.4),
-                        intake.setOutake(0.75),
+                        intake.setOutake(0.77),
                         new SleepAction(1.25),
                         intake.setIntake(0.6),
                         new SleepAction(1.5),
@@ -76,7 +76,7 @@ public class BlueClose extends LinearOpMode {
 
                         launch1,
                         intake.setIntake(-0.4),
-                        new SleepAction(0.1),
+                        new SleepAction(0.15),
                         intake.setIntake(0),
                         intake.setTrigger(0.4),
                         intake.setOutake(0.75),

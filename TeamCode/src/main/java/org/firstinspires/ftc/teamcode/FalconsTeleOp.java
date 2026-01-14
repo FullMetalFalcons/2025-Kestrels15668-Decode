@@ -4,6 +4,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.VoltageSensor;
 
@@ -12,9 +13,10 @@ public class FalconsTeleOp extends LinearOpMode {
     //Initialize motors, servos, sensors, imus, etc.
     DcMotorEx motorLF, motorRF, motorLB, motorRB, motorLaunch, motorRamp1, motorRamp2, motorIntake;
     Servo servoTrigger;
-    double presentvoltage, reverse;
-    boolean lastB, lastA, launchRunFar, launchRunClose, lastRB, intakeRun;
     VoltageSensor voltageSensor;
+    double reverse, voltage;
+    boolean lastB, lastA, launchRunFar, launchRunClose, lastRB, intakeRun;
+
     public static MecanumDrive.Params DRIVE_PARAMS = new MecanumDrive.Params();
 
 
@@ -24,7 +26,6 @@ public class FalconsTeleOp extends LinearOpMode {
         //Define those motors and stuff
         //The string should be the name on the Driver Hub
         // Set the strings at the top of the MecanumDrive file; they are shared between TeleOp and Autonomous
-        voltageSensor = hardwareMap.get(VoltageSensor.class, "Control Hub");
 
         motorLF = (DcMotorEx) hardwareMap.dcMotor.get(DRIVE_PARAMS.leftFrontDriveName);
         motorLB = (DcMotorEx) hardwareMap.dcMotor.get(DRIVE_PARAMS.leftBackDriveName);
@@ -35,6 +36,8 @@ public class FalconsTeleOp extends LinearOpMode {
         motorRamp1 = (DcMotorEx) hardwareMap.dcMotor.get("Intake1");
         motorRamp2 = (DcMotorEx) hardwareMap.dcMotor.get("Intake2");
         motorIntake = (DcMotorEx) hardwareMap.dcMotor.get("intake");
+
+        voltageSensor = hardwareMap.get(VoltageSensor.class, "Control Hub");
 
         // Use the following line as a template for defining new servos
         //Claw = (Servo) hardwareMap.servo.get("claw");
@@ -48,6 +51,7 @@ public class FalconsTeleOp extends LinearOpMode {
         motorLB.setDirection(DRIVE_PARAMS.leftBackDriveDirection);
         motorRF.setDirection(DRIVE_PARAMS.rightFrontDriveDirection);
         motorRB.setDirection(DRIVE_PARAMS.rightBackDriveDirection);
+        motorLaunch.setDirection(DcMotorSimple.Direction.REVERSE);
 
         //This resets the encoder values when the code is initialized
         motorLF.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
@@ -83,9 +87,9 @@ public class FalconsTeleOp extends LinearOpMode {
             double powerAng = 0.0;  // Desired power for turning          (-1 to 1)
 
             // Set the desired powers based on joystick inputs (-1 to 1)
-            powerX = gamepad1.left_stick_x * reverse * 0.8;
-            powerY = -gamepad1.left_stick_y * reverse * 0.8;
-            powerAng = -gamepad1.right_stick_x * 0.6;
+            powerX = gamepad1.left_stick_x * reverse;
+            powerY = -gamepad1.left_stick_y * reverse;
+            powerAng = -gamepad1.right_stick_x;
 
             // Perform vector math to determine the desired powers for each wheel
             double powerLF = powerX + powerY - powerAng;
@@ -110,7 +114,7 @@ public class FalconsTeleOp extends LinearOpMode {
             motorRF.setPower(powerRF);
             motorRB.setPower(powerRB);
 
-            //presentvoltage = voltageSensor.getVoltage();
+
 
             if (gamepad1.right_trigger > 0.25) {
                 reverse = -1;
@@ -118,13 +122,11 @@ public class FalconsTeleOp extends LinearOpMode {
                 reverse = 1;
             }
 
-            if (!launchRunClose && !launchRunFar) {
-                presentvoltage = voltageSensor.getVoltage();
-            }
 
-            if (gamepad2.b && !lastB) {
+
+            /*if (gamepad2.b && !lastB) {
                 if (!launchRunFar) {
-                    motorLaunch.setPower(0.955*13.5/presentvoltage);
+                    motorLaunch.setPower(0.955*13.5/voltage);
                     launchRunFar = true;
                 } else {
                     motorLaunch.setPower(0);
@@ -132,7 +134,7 @@ public class FalconsTeleOp extends LinearOpMode {
                 }
             } else if (gamepad2.a && !lastA) {
                 if (!launchRunClose) {
-                    motorLaunch.setPower(0.7*13.5/presentvoltage);
+                    motorLaunch.setPower(0.7*13.5/voltage);
                     launchRunClose = true;
                 } else {
                     motorLaunch.setPower(0);
@@ -140,21 +142,31 @@ public class FalconsTeleOp extends LinearOpMode {
                 }
             }
             lastB = gamepad2.b;
-            lastA = gamepad2.a;
+            lastA = gamepad2.a; */
 
-            /*if (gamepad1.right_bumper && !lastRB) {
+            voltage = voltageSensor.getVoltage();
+
+            if (gamepad2.b) {
+                motorLaunch.setPower(0.89*13.5/voltage);
+            } else if (gamepad2.a) {
+                motorLaunch.setPower(0.725*13.5/voltage);
+            } else {
+                motorLaunch.setPower(0);
+            }
+
+            if (gamepad1.right_bumper && !lastRB) {
                 intakeRun = !intakeRun;
             }
 
-            lastRB = gamepad1.right_bumper;*/
+            lastRB = gamepad1.right_bumper;
 
-            if (/*intakeRun*/ gamepad1.right_bumper) {
+            if (intakeRun) {
                 motorRamp1.setPower(0.8);
                 motorRamp2.setPower(-0.8);
                 motorIntake.setPower(1);
             } else if (gamepad2.right_bumper) {
-                motorRamp1.setPower(0.6);
-                motorRamp2.setPower(-0.6);
+                motorRamp1.setPower(0.7);
+                motorRamp2.setPower(-0.7);
                 motorIntake.setPower(1);
             } else if (gamepad1.left_bumper || gamepad2.left_bumper) {
                 motorRamp1.setPower(-0.5);
@@ -179,7 +191,7 @@ public class FalconsTeleOp extends LinearOpMode {
             // update() only needs to be run once and will "push" all of the added data
 
             telemetry.addData("servoPosition", servoTrigger.getPosition());
-            telemetry.addData("voltage", presentvoltage);
+            telemetry.addData("voltage", voltage);
             telemetry.update();
 
         } // opModeActive loop ends

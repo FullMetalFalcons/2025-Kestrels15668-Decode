@@ -4,7 +4,6 @@ import androidx.annotation.NonNull;
 
 import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
 import com.acmerobotics.roadrunner.Action;
-import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -14,17 +13,15 @@ import com.qualcomm.robotcore.hardware.VoltageSensor;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
-import java.util.concurrent.TimeUnit;
-
 public class KestrelIntake {
 
-    public DcMotorEx motorLaunch1, motorRamp1, motorRamp2, motorIntake;
+    public DcMotorEx motorLaunch, motorRamp1, motorRamp2, motorIntake;
     public Servo servoTrigger;
     public VoltageSensor voltageSensor;
     double voltage;
 
     public KestrelIntake(HardwareMap hardwareMap, Telemetry telemetry) {
-        motorLaunch1 = (DcMotorEx) hardwareMap.dcMotor.get("Launch1");
+        motorLaunch = (DcMotorEx) hardwareMap.dcMotor.get("Launch1");
         motorRamp1 = (DcMotorEx) hardwareMap.dcMotor.get("Intake1");
         motorRamp2 = (DcMotorEx) hardwareMap.dcMotor.get("Intake2");
         motorIntake = (DcMotorEx) hardwareMap.dcMotor.get("intake");
@@ -32,7 +29,9 @@ public class KestrelIntake {
         servoTrigger = (Servo) hardwareMap.servo.get("trigga");
         voltageSensor = hardwareMap.get(VoltageSensor.class, "Control Hub");
 
-        motorLaunch1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        motorLaunch.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        motorLaunch.setDirection(DcMotorSimple.Direction.REVERSE);
+
     }
 
     public class SetOutake implements Action {
@@ -44,7 +43,7 @@ public class KestrelIntake {
         @Override
         public boolean run (@NonNull TelemetryPacket packet) {
             voltage = voltageSensor.getVoltage();
-            motorLaunch1.setPower(desiredOutakeSpeed*13.5/voltage);
+            motorLaunch.setPower(desiredOutakeSpeed*13.5/voltage);
             return false;
         }
     }
@@ -78,7 +77,7 @@ public class KestrelIntake {
         public boolean run(@NonNull TelemetryPacket packet) {
             motorRamp1.setPower(desiredIntakeSpeed);
             motorRamp2.setPower(-desiredIntakeSpeed);
-            motorIntake.setPower(desiredIntakeSpeed);
+            motorIntake.setPower(Math.abs(desiredIntakeSpeed));
             return false;
         }
     }

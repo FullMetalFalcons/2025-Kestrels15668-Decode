@@ -18,39 +18,24 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 @Config
 @Autonomous
-public class RedClose extends LinearOpMode {
+public class RedClosePark extends LinearOpMode {
     public void runOpMode() {
-        Pose2d initialPose = new Pose2d(-26,0,Math.toRadians(-90));
+        Pose2d initialPose = new Pose2d(-26,-3,Math.toRadians(-90));
         MecanumDrive drive = new MecanumDrive(hardwareMap, initialPose);
         KestrelIntake intake = new KestrelIntake(hardwareMap, telemetry);
 
         Action preload;
-        Action goto1;
-        Action pickup1;
-        Action launch1;
         Action park;
 
         preload = drive.actionBuilder(initialPose)
                 .strafeTo(new Vector2d(0,-50))
-                .turn(Math.toRadians(-45))
+                .turn(Math.toRadians(-45.5))
                 .build();
 
-        goto1 = drive.actionBuilder(new Pose2d(0,-50,Math.toRadians(-90-45)))
-                .turn(Math.toRadians(45+90))
-                .build();
-
-        pickup1 = drive.actionBuilder(new Pose2d(0,-50,Math.toRadians(0)))
-                .strafeTo(new Vector2d(38,-50))
-                .build();
-
-        launch1 = drive.actionBuilder(new Pose2d(38,-50,Math.toRadians(0)))
-                .strafeTo(new Vector2d(0,-50))
-                .turn(Math.toRadians(-90-45))
-                .build();
-
-        park = drive.actionBuilder(new Pose2d(0,-50,Math.toRadians(-90-45)))
-                .turn(Math.toRadians(45))
-                .strafeTo(new Vector2d(0,-74))
+        park = drive.actionBuilder(new Pose2d(0,-50,Math.toRadians(-90-45.5)))
+                .turn(Math.toRadians(45.5))
+                .strafeTo(new Vector2d(0,-26))
+                .strafeTo(new Vector2d(-40,-26))
                 .build();
 
         waitForStart();
@@ -61,24 +46,6 @@ public class RedClose extends LinearOpMode {
                         preload,
                         intake.setTrigger(0.4),
                         intake.setOutake(0.77),
-                        new SleepAction(1.25),
-                        intake.setIntake(0.6),
-                        new SleepAction(1.5),
-                        intake.setTrigger(0.49),
-                        intake.setOutake(0),
-                        intake.setIntake(0),
-
-                        goto1,
-                        intake.setIntake(0.8),
-                        pickup1,
-                        intake.setIntake(0),
-
-                        launch1,
-                        intake.setIntake(-0.4),
-                        new SleepAction(0.15),
-                        intake.setIntake(0),
-                        intake.setTrigger(0.4),
-                        intake.setOutake(0.75),
                         new SleepAction(1.25),
                         intake.setIntake(0.6),
                         new SleepAction(1.5),

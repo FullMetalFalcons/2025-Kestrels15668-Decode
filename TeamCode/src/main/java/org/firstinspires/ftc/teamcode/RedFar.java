@@ -37,23 +37,22 @@ public class RedFar extends LinearOpMode {
 
         goto1 = drive.actionBuilder(new Pose2d(0,4,Math.toRadians(-90-24)))
                 .turn(Math.toRadians(24))
-                .waitSeconds(.25)
-                .strafeTo(new Vector2d(0,28))
-                .turn(Math.toRadians(-90))
+                .strafeTo(new Vector2d(0,26))
+                .turn(Math.toRadians(90))
             .build();
 
-        pickup1 = drive.actionBuilder(new Pose2d(0,28,Math.toRadians(0)))
-                .strafeTo(new Vector2d(38,28))
+        pickup1 = drive.actionBuilder(new Pose2d(0,26,Math.toRadians(0)))
+                .strafeTo(new Vector2d(38,26))
             .build();
 
-        launch1 = drive.actionBuilder(new Pose2d(38,28,Math.toRadians(0)))
-                .strafeTo(new Vector2d(0,4))
+        launch1 = drive.actionBuilder(new Pose2d(38,26,Math.toRadians(0)))
+                .strafeTo(new Vector2d(0,24+26))
                 .turn(Math.toRadians(-90-23))
             .build();
 
-        park = drive.actionBuilder(new Pose2d(0,4,Math.toRadians(-90-23)))
+        park = drive.actionBuilder(new Pose2d(0,50,Math.toRadians(-90-23)))
                 .turn(Math.toRadians(23))
-                .strafeTo(new Vector2d(0,28))
+                .strafeTo(new Vector2d(0,24+50))
             .build();
 
         waitForStart();
@@ -63,7 +62,7 @@ public class RedFar extends LinearOpMode {
                 new SequentialAction(
                         preload,
                         intake.setTrigger(0.4),
-                        intake.setOutake(0.955), //13.55V
+                        intake.setOutake(0.957), //13.55V
                         new SleepAction(1.25),
                         intake.setIntake(0.6),
                         new SleepAction(1.5),
@@ -78,10 +77,10 @@ public class RedFar extends LinearOpMode {
 
                         launch1,
                         intake.setIntake(-0.4),
-                        new SleepAction(0.1),
+                        new SleepAction(0.15),
                         intake.setIntake(0),
                         intake.setTrigger(0.4),
-                        intake.setOutake(0.955),
+                        intake.setOutake(0.957),
                         new SleepAction(1.25),
                         intake.setIntake(0.6),
                         new SleepAction(1.5),
