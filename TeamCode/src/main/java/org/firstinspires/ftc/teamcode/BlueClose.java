@@ -37,43 +37,43 @@ public class BlueClose extends LinearOpMode {
         preload = drive.actionBuilder(initialPose)
                 //.strafeTo(new Vector2d(0,-50))
                 //.turn(Math.toRadians(45))
-                .strafeToLinearHeading(new Vector2d(0,-50),Math.toRadians(45))
+                .strafeToLinearHeading(new Vector2d(0,-50),Math.toRadians(-45))
                 .build();
 
         goto1 = drive.actionBuilder(new Pose2d(0,-50,Math.toRadians(-45)))
                 //.turn(Math.toRadians(-135))
-                .strafeToLinearHeading(new Vector2d(-12,-50),Math.toRadians(-135))
+                .strafeToLinearHeading(new Vector2d(-12,-50),Math.toRadians(-180))
                 .build();
 
-        pickup1 = drive.actionBuilder(new Pose2d(-12,-50,Math.toRadians(180)))
+        pickup1 = drive.actionBuilder(new Pose2d(-12,-50,Math.toRadians(-180)))
                 .strafeTo(new Vector2d(-38,-50))
                 .build();
 
-        launch1 = drive.actionBuilder(new Pose2d(-38,-50,Math.toRadians(180)))
+        launch1 = drive.actionBuilder(new Pose2d(-38,-50,Math.toRadians(-180)))
                 //.strafeTo(new Vector2d(0,-50))
                 //.turn(Math.toRadians(90+45))
-                .strafeToLinearHeading(new Vector2d(0,-50),Math.toRadians(135))
+                .strafeToLinearHeading(new Vector2d(0,-50),Math.toRadians(-45))
                 .build();
 
         goto2 = drive.actionBuilder(new Pose2d(0,-50,Math.toRadians(-45)))
                 //.turn(Math.toRadians(-135))
-                .strafeToLinearHeading(new Vector2d(-12,-74),Math.toRadians(-135))
+                .strafeToLinearHeading(new Vector2d(-12,-74),Math.toRadians(-180))
                 .build();
 
-        pickup2 = drive.actionBuilder(new Pose2d(-12,-74,Math.toRadians(180)))
+        pickup2 = drive.actionBuilder(new Pose2d(-12,-74,Math.toRadians(-180)))
                 .strafeTo(new Vector2d(-38,-74))
                 .build();
 
-        launch2 = drive.actionBuilder(new Pose2d(-38,-74,Math.toRadians(180)))
+        launch2 = drive.actionBuilder(new Pose2d(-38,-74,Math.toRadians(-180)))
                 //.strafeTo(new Vector2d(0,-50))
                 //.turn(Math.toRadians(90+45))
-                .strafeToLinearHeading(new Vector2d(0,-50),Math.toRadians(135))
+                .strafeToLinearHeading(new Vector2d(0,-50),Math.toRadians(-45))
                 .build();
 
         park = drive.actionBuilder(new Pose2d(0,-50,Math.toRadians(-45)))
                 //.turn(Math.toRadians(-45))
                 //.strafeTo(new Vector2d(0,-74))
-                .strafeToLinearHeading(new Vector2d(0,-74),Math.toRadians(-45))
+                .strafeToLinearHeading(new Vector2d(0,-74),Math.toRadians(-90))
                 .build();
 
         waitForStart();

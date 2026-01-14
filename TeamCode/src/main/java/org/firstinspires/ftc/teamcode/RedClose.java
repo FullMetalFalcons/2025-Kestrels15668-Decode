@@ -20,7 +20,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 @Autonomous
 public class RedClose extends LinearOpMode {
     public void runOpMode() {
-        Pose2d initialPose = new Pose2d(-26,0,Math.toRadians(-90));
+        Pose2d initialPose = new Pose2d(-26,-3,Math.toRadians(-90));
         MecanumDrive drive = new MecanumDrive(hardwareMap, initialPose);
         KestrelIntake intake = new KestrelIntake(hardwareMap, telemetry);
 
@@ -36,15 +36,15 @@ public class RedClose extends LinearOpMode {
         preload = drive.actionBuilder(initialPose)
                 //.strafeTo(new Vector2d(0,-50))
                 //.turn(Math.toRadians(-45))
-                .strafeToLinearHeading(new Vector2d(0,-50),Math.toRadians(-45))
+                .strafeToLinearHeading(new Vector2d(0,-50),Math.toRadians(-135))
                 .build();
 
         goto1 = drive.actionBuilder(new Pose2d(0,-50,Math.toRadians(-135)))
                 //.turn(Math.toRadians(135))
-                .strafeToLinearHeading(new Vector2d(-12,-50),Math.toRadians(135))
+                .strafeToLinearHeading(new Vector2d(12,-50),Math.toRadians(0))
                 .build();
 
-        pickup1 = drive.actionBuilder(new Pose2d(-12,-50,Math.toRadians(0)))
+        pickup1 = drive.actionBuilder(new Pose2d(12,-50,Math.toRadians(0)))
                 .strafeTo(new Vector2d(38,-50))
                 .build();
 
@@ -56,11 +56,11 @@ public class RedClose extends LinearOpMode {
 
         goto2 = drive.actionBuilder(new Pose2d(0,-50,Math.toRadians(-135)))
                 //.turn(Math.toRadians(-135))
-                .strafeToLinearHeading(new Vector2d(0,-74),Math.toRadians(-135))
+                .strafeToLinearHeading(new Vector2d(12,-74),Math.toRadians(0))
                 .build();
 
-        pickup2 = drive.actionBuilder(new Pose2d(0,-74,Math.toRadians(0)))
-                .strafeTo(new Vector2d(-38,-74))
+        pickup2 = drive.actionBuilder(new Pose2d(12,-74,Math.toRadians(0)))
+                .strafeTo(new Vector2d(38,-74))
                 .build();
 
         launch2 = drive.actionBuilder(new Pose2d(-38,-74,Math.toRadians(0)))
@@ -72,7 +72,7 @@ public class RedClose extends LinearOpMode {
         park = drive.actionBuilder(new Pose2d(0,-50,Math.toRadians(-135)))
                 //.turn(Math.toRadians(45))
                 //.strafeTo(new Vector2d(0,-74))
-                .strafeToLinearHeading(new Vector2d(0,-74),Math.toRadians(45))
+                .strafeToLinearHeading(new Vector2d(0,-74),Math.toRadians(-90))
                 .build();
 
         waitForStart();
