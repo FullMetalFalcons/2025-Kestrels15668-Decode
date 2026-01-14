@@ -33,29 +33,33 @@ public class BlueFar extends LinearOpMode {
         Action park;
 
         preload = drive.actionBuilder(initialPose)
-                .strafeTo(new Vector2d(0,4))
-                .turn(Math.toRadians(24))
-            .build();
+                //.strafeTo(new Vector2d(0,4))
+                //.turn(Math.toRadians(24))
+                .strafeToLinearHeading(new Vector2d(0,4),Math.toRadians(24))
+                .build();
 
         goto1 = drive.actionBuilder(new Pose2d(0,4,Math.toRadians(-90+24)))
-                .turn(Math.toRadians(-24))
-                .strafeTo(new Vector2d(0,28))
-                .turn(Math.toRadians(-90))
-            .build();
+                /*.turn(Math.toRadians(-24))
+                .strafeTo(new Vector2d(0,26))
+                .turn(Math.toRadians(-90))*/
+                .strafeToLinearHeading(new Vector2d(0,26),Math.toRadians(-24-90))
+                .build();
 
-        pickup1 = drive.actionBuilder(new Pose2d(0,28,Math.toRadians(180)))
-                .strafeTo(new Vector2d(-38,28))
-            .build();
+        pickup1 = drive.actionBuilder(new Pose2d(0,26,Math.toRadians(180)))
+                .strafeTo(new Vector2d(-38,26))
+                .build();
 
-        launch1 = drive.actionBuilder(new Pose2d(-38,28,Math.toRadians(180)))
-                .strafeTo(new Vector2d(0,24+28))
-                .turn(Math.toRadians(90+23))
-            .build();
+        launch1 = drive.actionBuilder(new Pose2d(-38,26,Math.toRadians(180)))
+                //.strafeTo(new Vector2d(0,24+26))
+                //.turn(Math.toRadians(90+23))
+                .strafeToLinearHeading(new Vector2d(0,4),Math.toRadians(90+23))
+                .build();
 
-        park = drive.actionBuilder(new Pose2d(0,52,Math.toRadians(-90+24)))
-                .turn(Math.toRadians(-23))
-                .strafeTo(new Vector2d(0,24+52))
-            .build();
+        park = drive.actionBuilder(new Pose2d(0,4,Math.toRadians(-90+23)))
+                //.turn(Math.toRadians(-23))
+                //.strafeTo(new Vector2d(0,24+50))
+                .strafeToLinearHeading(new Vector2d(0,24+50),Math.toRadians(-23))
+                .build();
 
         waitForStart();
         if (isStopRequested()) return;

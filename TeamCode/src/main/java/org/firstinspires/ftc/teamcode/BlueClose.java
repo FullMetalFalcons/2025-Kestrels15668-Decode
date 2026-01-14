@@ -29,29 +29,51 @@ public class BlueClose extends LinearOpMode {
         Action goto1;
         Action pickup1;
         Action launch1;
+        Action goto2;
+        Action pickup2;
+        Action launch2;
         Action park;
 
         preload = drive.actionBuilder(initialPose)
-                .strafeTo(new Vector2d(0,-50))
-                .turn(Math.toRadians(45))
+                //.strafeTo(new Vector2d(0,-50))
+                //.turn(Math.toRadians(45))
+                .strafeToLinearHeading(new Vector2d(0,-50),Math.toRadians(45))
                 .build();
 
-        goto1 = drive.actionBuilder(new Pose2d(0,-50,Math.toRadians(-90+45)))
-                .turn(Math.toRadians(-45-90))
+        goto1 = drive.actionBuilder(new Pose2d(0,-50,Math.toRadians(-45)))
+                //.turn(Math.toRadians(-135))
+                .strafeToLinearHeading(new Vector2d(-12,-50),Math.toRadians(-135))
                 .build();
 
-        pickup1 = drive.actionBuilder(new Pose2d(0,-50,Math.toRadians(180)))
+        pickup1 = drive.actionBuilder(new Pose2d(-12,-50,Math.toRadians(180)))
                 .strafeTo(new Vector2d(-38,-50))
                 .build();
 
         launch1 = drive.actionBuilder(new Pose2d(-38,-50,Math.toRadians(180)))
-                .strafeTo(new Vector2d(0,-50))
-                .turn(Math.toRadians(90+45))
+                //.strafeTo(new Vector2d(0,-50))
+                //.turn(Math.toRadians(90+45))
+                .strafeToLinearHeading(new Vector2d(0,-50),Math.toRadians(135))
                 .build();
 
-        park = drive.actionBuilder(new Pose2d(0,-50,Math.toRadians(-90+45)))
-                .turn(Math.toRadians(-45))
-                .strafeTo(new Vector2d(0,-74))
+        goto2 = drive.actionBuilder(new Pose2d(0,-50,Math.toRadians(-45)))
+                //.turn(Math.toRadians(-135))
+                .strafeToLinearHeading(new Vector2d(-12,-74),Math.toRadians(-135))
+                .build();
+
+        pickup2 = drive.actionBuilder(new Pose2d(-12,-74,Math.toRadians(180)))
+                .strafeTo(new Vector2d(-38,-74))
+                .build();
+
+        launch2 = drive.actionBuilder(new Pose2d(-38,-74,Math.toRadians(180)))
+                //.strafeTo(new Vector2d(0,-50))
+                //.turn(Math.toRadians(90+45))
+                .strafeToLinearHeading(new Vector2d(0,-50),Math.toRadians(135))
+                .build();
+
+        park = drive.actionBuilder(new Pose2d(0,-50,Math.toRadians(-45)))
+                //.turn(Math.toRadians(-45))
+                //.strafeTo(new Vector2d(0,-74))
+                .strafeToLinearHeading(new Vector2d(0,-74),Math.toRadians(-45))
                 .build();
 
         waitForStart();
@@ -75,6 +97,24 @@ public class BlueClose extends LinearOpMode {
                         intake.setIntake(0),
 
                         launch1,
+                        intake.setIntake(-0.4),
+                        new SleepAction(0.15),
+                        intake.setIntake(0),
+                        intake.setTrigger(0.4),
+                        intake.setOutake(0.75),
+                        new SleepAction(1.25),
+                        intake.setIntake(0.6),
+                        new SleepAction(1.5),
+                        intake.setTrigger(0.49),
+                        intake.setOutake(0),
+                        intake.setIntake(0),
+
+                        goto2,
+                        intake.setIntake(0.8),
+                        pickup2,
+                        intake.setIntake(0),
+
+                        launch2,
                         intake.setIntake(-0.4),
                         new SleepAction(0.15),
                         intake.setIntake(0),
