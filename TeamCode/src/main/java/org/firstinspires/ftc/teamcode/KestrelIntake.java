@@ -31,6 +31,8 @@ public class KestrelIntake {
 
         motorLaunch.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         motorLaunch.setDirection(DcMotorSimple.Direction.REVERSE);
+        motorIntake.setDirection(DcMotorSimple.Direction.REVERSE);
+
 
     }
 

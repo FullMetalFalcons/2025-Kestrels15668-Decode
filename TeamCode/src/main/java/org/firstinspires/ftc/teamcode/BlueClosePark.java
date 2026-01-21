@@ -20,7 +20,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 @Autonomous
 public class BlueClosePark extends LinearOpMode {
     public void runOpMode() {
-        Pose2d initialPose = new Pose2d(26,-3,Math.toRadians(-90));
+        Pose2d initialPose = new Pose2d(26,-4,Math.toRadians(-90));
         MecanumDrive drive = new MecanumDrive(hardwareMap, initialPose);
         KestrelIntake intake = new KestrelIntake(hardwareMap, telemetry);
 

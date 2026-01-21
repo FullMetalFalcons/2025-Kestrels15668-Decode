@@ -79,7 +79,7 @@ public final class MecanumDrive {
 
         // turn profile parameters (in radians)
         public double maxAngVel = Math.PI; // shared with path
-        public double maxAngAccel = Math.PI;
+        public double maxAngAccel = Math.PI*1.1;
 
         // path controller gains
         public double axialGain = 11;
@@ -98,7 +98,7 @@ public final class MecanumDrive {
 
         public DcMotorSimple.Direction leftFrontDriveDirection = DcMotorSimple.Direction.REVERSE;
         public DcMotorSimple.Direction leftBackDriveDirection = DcMotorSimple.Direction.REVERSE;
-        public DcMotorSimple.Direction rightFrontDriveDirection = DcMotorSimple.Direction.FORWARD;
+        public DcMotorSimple.Direction rightFrontDriveDirection = DcMotorSimple.Direction.REVERSE;
         public DcMotorSimple.Direction rightBackDriveDirection = DcMotorSimple.Direction.FORWARD;
     }
 

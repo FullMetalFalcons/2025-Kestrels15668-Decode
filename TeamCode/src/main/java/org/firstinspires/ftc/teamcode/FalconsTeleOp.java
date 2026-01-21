@@ -52,6 +52,8 @@ public class FalconsTeleOp extends LinearOpMode {
         motorRF.setDirection(DRIVE_PARAMS.rightFrontDriveDirection);
         motorRB.setDirection(DRIVE_PARAMS.rightBackDriveDirection);
         motorLaunch.setDirection(DcMotorSimple.Direction.REVERSE);
+        motorIntake.setDirection(DcMotorSimple.Direction.REVERSE);
+
 
         //This resets the encoder values when the code is initialized
         motorLF.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
@@ -149,7 +151,7 @@ public class FalconsTeleOp extends LinearOpMode {
             if (gamepad2.b) {
                 motorLaunch.setPower(0.89*13.5/voltage);
             } else if (gamepad2.a) {
-                motorLaunch.setPower(0.725*13.5/voltage);
+                motorLaunch.setPower(0.71*13.5/voltage);
             } else {
                 motorLaunch.setPower(0);
             }

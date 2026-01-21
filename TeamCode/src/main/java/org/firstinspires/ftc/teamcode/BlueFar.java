@@ -33,16 +33,16 @@ public class BlueFar extends LinearOpMode {
         Action park;
 
         preload = drive.actionBuilder(initialPose)
-                //.strafeTo(new Vector2d(0,4))
-                //.turn(Math.toRadians(24))
-                .strafeToLinearHeading(new Vector2d(0,4),Math.toRadians(-90+24))
+                .strafeTo(new Vector2d(0,4))
+                .turn(Math.toRadians(24))
+                //.strafeToLinearHeading(new Vector2d(0,4),Math.toRadians(-90+24))
                 .build();
 
         goto1 = drive.actionBuilder(new Pose2d(0,4,Math.toRadians(-90+24)))
-                /*.turn(Math.toRadians(-24))
+                .turn(Math.toRadians(-24))
                 .strafeTo(new Vector2d(0,26))
-                .turn(Math.toRadians(-90))*/
-                .strafeToLinearHeading(new Vector2d(-12,26),Math.toRadians(-24))
+                .turn(Math.toRadians(-90))
+                //.strafeToLinearHeading(new Vector2d(-12,26),Math.toRadians(-24))
                 .build();
 
         pickup1 = drive.actionBuilder(new Pose2d(-12,26,Math.toRadians(180)))
@@ -50,15 +50,15 @@ public class BlueFar extends LinearOpMode {
                 .build();
 
         launch1 = drive.actionBuilder(new Pose2d(-38,26,Math.toRadians(180)))
-                //.strafeTo(new Vector2d(0,24+26))
-                //.turn(Math.toRadians(90+23))
-                .strafeToLinearHeading(new Vector2d(0,4),Math.toRadians(23))
+                .strafeTo(new Vector2d(0,24+26))
+                .turn(Math.toRadians(90+23))
+                //.strafeToLinearHeading(new Vector2d(0,4),Math.toRadians(23))
                 .build();
 
         park = drive.actionBuilder(new Pose2d(0,4,Math.toRadians(-90+23)))
-                //.turn(Math.toRadians(-23))
-                //.strafeTo(new Vector2d(0,24+50))
-                .strafeToLinearHeading(new Vector2d(0,24),Math.toRadians(-90))
+                .turn(Math.toRadians(-23))
+                .strafeTo(new Vector2d(0,24+50))
+                //.strafeToLinearHeading(new Vector2d(0,24),Math.toRadians(-90))
                 .build();
 
         waitForStart();
