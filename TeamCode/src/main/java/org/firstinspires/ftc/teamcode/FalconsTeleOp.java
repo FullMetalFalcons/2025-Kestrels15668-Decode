@@ -12,7 +12,7 @@ import com.qualcomm.robotcore.hardware.VoltageSensor;
 public class FalconsTeleOp extends LinearOpMode {
     //Initialize motors, servos, sensors, imus, etc.
     DcMotorEx motorLF, motorRF, motorLB, motorRB, motorLaunch, motorRamp1, motorRamp2, motorIntake;
-    Servo servoTrigger;
+    Servo servoTrigger, lightLauncher;
     VoltageSensor voltageSensor;
     double reverse, voltage;
     boolean lastB, lastA, launchRunFar, launchRunClose, lastRB, intakeRun;
@@ -42,6 +42,7 @@ public class FalconsTeleOp extends LinearOpMode {
         // Use the following line as a template for defining new servos
         //Claw = (Servo) hardwareMap.servo.get("claw");
         servoTrigger = (Servo) hardwareMap.servo.get("trigga");
+        lightLauncher = (Servo) hardwareMap.servo.get("light");
 
 
         //Set them to the correct modes
@@ -75,6 +76,7 @@ public class FalconsTeleOp extends LinearOpMode {
         motorLB.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         motorRF.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         motorRB.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        motorLaunch.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
 
         // The program will pause here until the Play icon is pressed on the Driver Station
@@ -149,9 +151,9 @@ public class FalconsTeleOp extends LinearOpMode {
             voltage = voltageSensor.getVoltage();
 
             if (gamepad2.b) {
-                motorLaunch.setPower(0.89*13.5/voltage);
+                motorLaunch.setPower(0.92*13.5/voltage);
             } else if (gamepad2.a) {
-                motorLaunch.setPower(0.71*13.5/voltage);
+                motorLaunch.setPower(0.68*13.5/voltage);
             } else {
                 motorLaunch.setPower(0);
             }
@@ -185,7 +187,17 @@ public class FalconsTeleOp extends LinearOpMode {
                 servoTrigger.setPosition(0.49);
             }
 
-
+            if (motorLaunch.getVelocity() > 1800 && gamepad2.b) {
+                lightLauncher.setPosition(0.611);
+            } else if (gamepad2.b) {
+                lightLauncher.setPosition(0.279);
+            } else if (motorLaunch.getVelocity() > 1650 && gamepad2.a) {
+                lightLauncher.setPosition(0.611);
+            } else if (gamepad2.a) {
+                lightLauncher.setPosition(0.279);
+            } else {
+                lightLauncher.setPosition(0);
+            }
 
             // If you want to print information to the Driver Station, use telemetry
             // addData() lets you give a string which is automatically followed by a ":" when printed
@@ -194,6 +206,7 @@ public class FalconsTeleOp extends LinearOpMode {
 
             telemetry.addData("servoPosition", servoTrigger.getPosition());
             telemetry.addData("voltage", voltage);
+            telemetry.addData("launchRPM", motorLaunch.getVelocity());
             telemetry.update();
 
         } // opModeActive loop ends

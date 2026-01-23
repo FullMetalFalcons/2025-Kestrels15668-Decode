@@ -21,7 +21,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 @Autonomous
 public class BlueClose extends LinearOpMode {
     public void runOpMode() {
-        Pose2d initialPose = new Pose2d(-36,-10,Math.toRadians(-45));
+        Pose2d initialPose = new Pose2d(-42,-10,Math.toRadians(-45));
         MecanumDrive drive = new MecanumDrive(hardwareMap, initialPose);
         KestrelIntake intake = new KestrelIntake(hardwareMap, telemetry);
 
@@ -46,10 +46,10 @@ public class BlueClose extends LinearOpMode {
                 .build();
 
         pickup1 = drive.actionBuilder(new Pose2d(0,-48,Math.toRadians(-180)))
-                .strafeTo(new Vector2d(-38,-48))
+                .strafeTo(new Vector2d(-40,-48))
                 .build();
 
-        launch1 = drive.actionBuilder(new Pose2d(-38,-48 ,Math.toRadians(-180)))
+        launch1 = drive.actionBuilder(new Pose2d(-40,-48 ,Math.toRadians(-180)))
                 .strafeTo(new Vector2d(0,-48))
                 .turn(Math.toRadians(135))
                 //.strafeToLinearHeading(new Vector2d(0+36,-48),Math.toRadians(-45))
@@ -57,15 +57,16 @@ public class BlueClose extends LinearOpMode {
 
         goto2 = drive.actionBuilder(new Pose2d(0,-48,Math.toRadians(-45)))
                 .turn(Math.toRadians(-135))
-                .strafeTo(new Vector2d(-9,-24)) //y should be -72
+                .strafeTo(new Vector2d(-9,-20)) //y should be -72
                 //.strafeToLinearHeading(new Vector2d(-12,-72),Math.toRadians(-180))
                 .build();
 
-        pickup2 = drive.actionBuilder(new Pose2d(-9,-24,Math.toRadians(-180)))
-                .strafeTo(new Vector2d(-40,-24))
+        pickup2 = drive.actionBuilder(new Pose2d(-9,-20,Math.toRadians(-180)))
+                .strafeTo(new Vector2d(-56,-20))
                 .build();
 
-        launch2 = drive.actionBuilder(new Pose2d(-40,-24,Math.toRadians(-180)))
+        launch2 = drive.actionBuilder(new Pose2d(-56,-20,Math.toRadians(-180)))
+                .strafeTo(new Vector2d(-40,-48))
                 .strafeTo(new Vector2d(0,-48))
                 .turn(Math.toRadians(135))
                 //.strafeToLinearHeading(new Vector2d(0+36,-48),Math.toRadians(-45))
@@ -86,7 +87,7 @@ public class BlueClose extends LinearOpMode {
                             preload,
                             intake.setTrigger(0.4),
                             new SequentialAction(
-                                new SleepAction(1.05),
+                                new SleepAction(1),
                                 intake.setOutake(0.68)
                             )
                         ),
@@ -100,7 +101,7 @@ public class BlueClose extends LinearOpMode {
                         ),
 
                         goto1,
-                        intake.setIntake(0.8),
+                        intake.setIntake(0.9),
                         pickup1,
                         intake.setIntake(0),
 
@@ -121,7 +122,7 @@ public class BlueClose extends LinearOpMode {
                                 launch1,
                                 intake.setTrigger(0.4),
                                 new SequentialAction(
-                                    new SleepAction(2.1),
+                                    new SleepAction(2.15),
                                     intake.setOutake(0.68)
                                 ),
                                 new SequentialAction(
@@ -140,7 +141,7 @@ public class BlueClose extends LinearOpMode {
                         ),
 
                         goto2,
-                        intake.setIntake(0.8),
+                        intake.setIntake(0.9),
                         pickup2,
                         intake.setIntake(0),
 
@@ -148,7 +149,7 @@ public class BlueClose extends LinearOpMode {
                                 launch2,
                                 intake.setTrigger(0.4),
                                 new SequentialAction(
-                                        new SleepAction(2.2),
+                                        new SleepAction(2.25),
                                         intake.setOutake(0.67)
                                 ),
                                 new SequentialAction(

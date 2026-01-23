@@ -45,19 +45,19 @@ public class BlueFar extends LinearOpMode {
                 //.strafeToLinearHeading(new Vector2d(-12,26),Math.toRadians(-24))
                 .build();
 
-        pickup1 = drive.actionBuilder(new Pose2d(-12,26,Math.toRadians(180)))
+        pickup1 = drive.actionBuilder(new Pose2d(0,26,Math.toRadians(180)))
                 .strafeTo(new Vector2d(-38,26))
                 .build();
 
         launch1 = drive.actionBuilder(new Pose2d(-38,26,Math.toRadians(180)))
-                .strafeTo(new Vector2d(0,24+26))
+                .strafeTo(new Vector2d(0,26+24))
                 .turn(Math.toRadians(90+23))
                 //.strafeToLinearHeading(new Vector2d(0,4),Math.toRadians(23))
                 .build();
 
-        park = drive.actionBuilder(new Pose2d(0,4,Math.toRadians(-90+23)))
+        park = drive.actionBuilder(new Pose2d(0,50,Math.toRadians(-90+23)))
                 .turn(Math.toRadians(-23))
-                .strafeTo(new Vector2d(0,24+50))
+                .strafeTo(new Vector2d(0,50+24))
                 //.strafeToLinearHeading(new Vector2d(0,24),Math.toRadians(-90))
                 .build();
 
@@ -68,7 +68,7 @@ public class BlueFar extends LinearOpMode {
                 new SequentialAction(
                         preload,
                         intake.setTrigger(0.4),
-                        intake.setOutake(0.957), //13.55V
+                        intake.setOutake(0.96), //13.55V
                         new SleepAction(1.25),
                         intake.setIntake(0.6),
                         new SleepAction(1.5),
@@ -86,7 +86,7 @@ public class BlueFar extends LinearOpMode {
                         new SleepAction(0.15),
                         intake.setIntake(0),
                         intake.setTrigger(0.4),
-                        intake.setOutake(0.957),
+                        intake.setOutake(0.96),
                         new SleepAction(1.25),
                         intake.setIntake(0.6),
                         new SleepAction(1.5),
