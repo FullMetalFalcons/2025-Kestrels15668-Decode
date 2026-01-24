@@ -8,20 +8,33 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.VoltageSensor;
 
+import com.acmerobotics.roadrunner.Action;
+import com.acmerobotics.roadrunner.ParallelAction;
+import com.acmerobotics.roadrunner.Pose2d;
+import com.acmerobotics.roadrunner.SequentialAction;
+import com.acmerobotics.roadrunner.SleepAction;
+import com.acmerobotics.roadrunner.Vector2d;
+import com.acmerobotics.roadrunner.ftc.Actions;
+import com.acmerobotics.roadrunner.InstantAction;
+
+
 @TeleOp
 public class FalconsTeleOp extends LinearOpMode {
+    //Action blueClose,blueFar,redClose,redFar;
     //Initialize motors, servos, sensors, imus, etc.
     DcMotorEx motorLF, motorRF, motorLB, motorRB, motorLaunch, motorRamp1, motorRamp2, motorIntake;
     Servo servoTrigger, lightLauncher;
     VoltageSensor voltageSensor;
+    //public Pose2d initialPose;
     double reverse, voltage;
-    boolean lastB, lastA, launchRunFar, launchRunClose, lastRB, intakeRun;
+    boolean lastB, lastA, launchRunFar, launchRunClose, lastRB, intakeRun/*,blueRunNow*/;
 
     public static MecanumDrive.Params DRIVE_PARAMS = new MecanumDrive.Params();
 
 
     // The following code will run as soon as "INIT" is pressed on the Driver Station
     public void runOpMode() {
+
 
         //Define those motors and stuff
         //The string should be the name on the Driver Hub
@@ -78,6 +91,23 @@ public class FalconsTeleOp extends LinearOpMode {
         motorRB.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         motorLaunch.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
+        //Initial Pose for
+        /*MecanumDrive drive = new MecanumDrive(hardwareMap, initialPose);
+
+        blueClose = drive.actionBuilder(initialPose)
+                .strafeToLinearHeading(new Vector2d(-12,12),Math.toRadians(-45))
+                .build();
+        blueFar = drive.actionBuilder(initialPose)
+                .strafeToLinearHeading(new Vector2d(-12,-58),Math.toRadians(-24-90))
+                .build();
+        redClose = drive.actionBuilder(initialPose)
+                .strafeToLinearHeading(new Vector2d(12,12),Math.toRadians(-135))
+                .build();
+        redFar = drive.actionBuilder(initialPose)
+                .strafeToLinearHeading(new Vector2d(12,-58),Math.toRadians(24-90))
+                .build();
+
+        blueRunNow = MecanumDrive.PARAMS.blueRun;*/
 
         // The program will pause here until the Play icon is pressed on the Driver Station
         waitForStart();
@@ -153,7 +183,7 @@ public class FalconsTeleOp extends LinearOpMode {
             if (gamepad2.b) {
                 motorLaunch.setPower(0.92*13.5/voltage);
             } else if (gamepad2.a) {
-                motorLaunch.setPower(0.68*13.5/voltage);
+                motorLaunch.setPower(0.665*13.5/voltage);
             } else {
                 motorLaunch.setPower(0);
             }
@@ -187,11 +217,11 @@ public class FalconsTeleOp extends LinearOpMode {
                 servoTrigger.setPosition(0.49);
             }
 
-            if (motorLaunch.getVelocity() > 1800 && gamepad2.b) {
+            if (motorLaunch.getVelocity() > 1750 && gamepad2.b) {
                 lightLauncher.setPosition(0.611);
             } else if (gamepad2.b) {
                 lightLauncher.setPosition(0.279);
-            } else if (motorLaunch.getVelocity() > 1650 && gamepad2.a) {
+            } else if (motorLaunch.getVelocity() > 1550 && gamepad2.a) {
                 lightLauncher.setPosition(0.611);
             } else if (gamepad2.a) {
                 lightLauncher.setPosition(0.279);
@@ -204,9 +234,32 @@ public class FalconsTeleOp extends LinearOpMode {
             //     the variable that you list after the comma will be displayed next to the label
             // update() only needs to be run once and will "push" all of the added data
 
-            telemetry.addData("servoPosition", servoTrigger.getPosition());
+            /*if (blueRunNow && gamepad2.dpad_down) {
+                    //Blue close
+                Actions.runBlocking(
+                   blueClose
+                );
+            } else if (blueRunNow && gamepad2.dpad_right) {
+                    //Blue far
+                Actions.runBlocking(
+                    blueFar
+                );
+            } else if (!blueRunNow && gamepad2.dpad_down) {
+                    //Red close
+                Actions.runBlocking(
+                    redClose
+                );
+            } else if (!blueRunNow && gamepad2.dpad_right) {
+                    //Red far
+                Actions.runBlocking(
+                    redFar
+                );
+            }*/
+
+                telemetry.addData("servoPosition", servoTrigger.getPosition());
             telemetry.addData("voltage", voltage);
             telemetry.addData("launchRPM", motorLaunch.getVelocity());
+
             telemetry.update();
 
         } // opModeActive loop ends
