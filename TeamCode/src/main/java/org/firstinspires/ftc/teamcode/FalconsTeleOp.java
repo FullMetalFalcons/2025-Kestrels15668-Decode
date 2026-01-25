@@ -181,9 +181,9 @@ public class FalconsTeleOp extends LinearOpMode {
             voltage = voltageSensor.getVoltage();
 
             if (gamepad2.b) {
-                motorLaunch.setPower(0.92*13.5/voltage);
+                motorLaunch.setPower(0.957*13.5/voltage);
             } else if (gamepad2.a) {
-                motorLaunch.setPower(0.665*13.5/voltage);
+                motorLaunch.setPower(0.671*13.5/voltage);
             } else {
                 motorLaunch.setPower(0);
             }
@@ -199,12 +199,12 @@ public class FalconsTeleOp extends LinearOpMode {
                 motorRamp2.setPower(-0.8);
                 motorIntake.setPower(1);
             } else if (gamepad2.right_bumper) {
-                motorRamp1.setPower(0.7);
-                motorRamp2.setPower(-0.7);
+                motorRamp1.setPower(0.6);
+                motorRamp2.setPower(-0.6);
                 motorIntake.setPower(1);
             } else if (gamepad1.left_bumper || gamepad2.left_bumper) {
-                motorRamp1.setPower(-0.5);
-                motorRamp2.setPower(0.5);
+                motorRamp1.setPower(-0.55);
+                motorRamp2.setPower(0.55);
                 motorIntake.setPower(1);
             } else {
                 motorRamp1.setPower(0);
@@ -214,16 +214,16 @@ public class FalconsTeleOp extends LinearOpMode {
             if (gamepad2.right_trigger > 0.25) {
                 servoTrigger.setPosition(0.4);
             } else {
-                servoTrigger.setPosition(0.49);
+                servoTrigger.setPosition(0.48);
             }
 
-            if (motorLaunch.getVelocity() > 1750 && gamepad2.b) {
+            if (motorLaunch.getVelocity() > 1600 && gamepad2.b) {
                 lightLauncher.setPosition(0.611);
-            } else if (gamepad2.b) {
+            } else if (gamepad2.b /*|| (gamepad2.b && (gamepad1.left_stick_x > 0.1 || gamepad1.left_stick_y > 0.1 || gamepad1.right_stick_x > 0.1 || gamepad1.right_stick_y > 0.1))*/) {
                 lightLauncher.setPosition(0.279);
             } else if (motorLaunch.getVelocity() > 1550 && gamepad2.a) {
                 lightLauncher.setPosition(0.611);
-            } else if (gamepad2.a) {
+            } else if (gamepad2.a /*|| (gamepad2.a && (gamepad1.left_stick_x > 0.1 || gamepad1.left_stick_y > 0.1 || gamepad1.right_stick_x > 0.1 || gamepad1.right_stick_y > 0.1)))*/) {
                 lightLauncher.setPosition(0.279);
             } else {
                 lightLauncher.setPosition(0);

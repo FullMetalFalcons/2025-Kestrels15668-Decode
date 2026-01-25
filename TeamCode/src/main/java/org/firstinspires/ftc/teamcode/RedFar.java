@@ -30,41 +30,38 @@ public class RedFar extends LinearOpMode {
         Action goto1;
         Action pickup1;
         Action launch1;
+
         Action park;
-        Action home;
 
         preload = drive.actionBuilder(initialPose)
                 .strafeTo(new Vector2d(12,4-62))
-                .turn(Math.toRadians(-24))
+                .turn(Math.toRadians(-23.5))
                 //.strafeToLinearHeading(new Vector2d(0,4),Math.toRadians(-90-24))
             .build();
 
-        goto1 = drive.actionBuilder(new Pose2d(12,4-62,Math.toRadians(-90-24)))
-                .turn(Math.toRadians(24))
+        goto1 = drive.actionBuilder(new Pose2d(12,4-62,Math.toRadians(-90-23.5)))
+                .turn(Math.toRadians(23.5))
                 .strafeTo(new Vector2d(12,24-62))
                 .turn(Math.toRadians(90))
                 //.strafeToLinearHeading(new Vector2d(12,26),Math.toRadians(0))
             .build();
 
         pickup1 = drive.actionBuilder(new Pose2d(12,24-62,Math.toRadians(0)))
-                .strafeTo(new Vector2d(53+12,24-62))
+                .strafeTo(new Vector2d(52+12,24-62))
             .build();
 
-        launch1 = drive.actionBuilder(new Pose2d(53+12,24-62,Math.toRadians(0)))
+        launch1 = drive.actionBuilder(new Pose2d(52+12,24-62,Math.toRadians(0)))
                 .strafeTo(new Vector2d(12,24+24-62))
-                .turn(Math.toRadians(-90-24))
+                .turn(Math.toRadians(-90-23.5))
                 //.strafeToLinearHeading(new Vector2d(0,4),Math.toRadians(-90-23))
             .build();
 
-        park = drive.actionBuilder(new Pose2d(12,48-62,Math.toRadians(-90-24)))
-                .turn(Math.toRadians(24))
+        park = drive.actionBuilder(new Pose2d(12,48-62,Math.toRadians(-90-23.5)))
+                .turn(Math.toRadians(23.5))
                 .strafeTo(new Vector2d(12,48+24-62))
                 //.strafeToLinearHeading(new Vector2d(0,24),Math.toRadians(-90))
             .build();
-        home = drive.actionBuilder(new Pose2d(12,48+24-62,Math.toRadians(-90)))
-                .strafeTo(new Vector2d(0,0))
-                //.strafeToLinearHeading(new Vector2d(0,24),Math.toRadians(-90))
-                .build();
+
 
 
         waitForStart();
@@ -87,20 +84,21 @@ public class RedFar extends LinearOpMode {
                                 intake.setTrigger(0.4),
                                 new SequentialAction(
                                         new SleepAction(0),
-                                        intake.setOutake(0.965)
+                                        intake.setOutake(0.972)
                                 )
                         ),
                         new SleepAction(0.1), //1.25
                         intake.setIntake(0.57),
                         new SleepAction(1.55),
                         new ParallelAction(
-                                intake.setTrigger(0.49),
+                                intake.setTrigger(0.48),
                                 intake.setOutake(0),
                                 intake.setIntake(0)
                         ),
 
                         goto1,
                         intake.setIntake(0.8),
+                        new SleepAction(0.1),
                         pickup1,
                         intake.setIntake(0),
 
@@ -108,8 +106,11 @@ public class RedFar extends LinearOpMode {
                                 launch1,
                                 intake.setTrigger(0.4),
                                 new SequentialAction(
-                                        new SleepAction(2),
-                                        intake.setOutake(0.965)
+                                        intake.setOutake(-0.1),
+                                        new SleepAction(0.5),
+                                        intake.setOutake(0),
+                                        new SleepAction(2.4),
+                                        intake.setOutake(0.972)
                                 ),
                                 new SequentialAction(
                                         intake.setIntake(-0.4),
@@ -121,7 +122,7 @@ public class RedFar extends LinearOpMode {
                         intake.setIntake(0.7),
                         new SleepAction(1.5),
                         new ParallelAction(
-                                intake.setTrigger(0.49),
+                                intake.setTrigger(0.48),
                                 intake.setOutake(0),
                                 intake.setIntake(0)
                         ),

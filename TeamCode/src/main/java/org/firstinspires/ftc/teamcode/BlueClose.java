@@ -58,16 +58,16 @@ public class BlueClose extends LinearOpMode {
 
         goto2 = drive.actionBuilder(new Pose2d(-12,-48,Math.toRadians(-45)))
                 .turn(Math.toRadians(-135))
-                .strafeTo(new Vector2d(-9-12,-22)) //y should be -72
+                .strafeTo(new Vector2d(-10-12,-21)) //y should be -72
                 //.strafeToLinearHeading(new Vector2d(-12,-72),Math.toRadians(-180))
                 .build();
 
-        pickup2 = drive.actionBuilder(new Pose2d(-9-12,-22,Math.toRadians(-180)))
-                .strafeTo(new Vector2d(-52-12,-26))
+        pickup2 = drive.actionBuilder(new Pose2d(-10-12,-21,Math.toRadians(-180)))
+                .strafeTo(new Vector2d(-52-12,-21))
                 .build();
 
-        launch2 = drive.actionBuilder(new Pose2d(-52-12,-22,Math.toRadians(-180)))
-                .strafeTo(new Vector2d(-40-12,-22))
+        launch2 = drive.actionBuilder(new Pose2d(-52-12,-21,Math.toRadians(-180)))
+                .strafeTo(new Vector2d(-40-12,-21))
                 .strafeTo(new Vector2d(-12,-48))
                 .turn(Math.toRadians(135))
                 //.strafeToLinearHeading(new Vector2d(0+36,-48),Math.toRadians(-45))
@@ -91,14 +91,14 @@ public class BlueClose extends LinearOpMode {
                                 intake.setTrigger(0.4),
                                 new SequentialAction(
                                         new SleepAction(0.9),
-                                        intake.setOutake(0.775)
+                                        intake.setOutake(0.784)
                                 )
                         ),
                         new SleepAction(0.1), //1.25
                         intake.setIntake(0.6),
                         new SleepAction(1.5),
                         new ParallelAction(
-                                intake.setTrigger(0.49),
+                                intake.setTrigger(0.48),
                                 intake.setOutake(0),
                                 intake.setIntake(0)
                         ),
@@ -125,12 +125,12 @@ public class BlueClose extends LinearOpMode {
                                 launch1,
                                 intake.setTrigger(0.4),
                                 new SequentialAction(
-                                        new SleepAction(2.1),
-                                        intake.setOutake(0.775)
+                                        new SleepAction(2.2),
+                                        intake.setOutake(0.784)
                                 ),
                                 new SequentialAction(
                                         intake.setIntake(-0.4),
-                                        new SleepAction(0.1),
+                                        new SleepAction(0.12),
                                         intake.setIntake(0)
                                 )
                         ),
@@ -138,7 +138,7 @@ public class BlueClose extends LinearOpMode {
                         intake.setIntake(0.6),
                         new SleepAction(1.5),
                         new ParallelAction(
-                                intake.setTrigger(0.49),
+                                intake.setTrigger(0.48),
                                 intake.setOutake(0),
                                 intake.setIntake(0)
                         ),
@@ -152,12 +152,12 @@ public class BlueClose extends LinearOpMode {
                                 launch2,
                                 intake.setTrigger(0.4),
                                 new SequentialAction(
-                                        new SleepAction(2.2),
-                                        intake.setOutake(0.775)
+                                        new SleepAction(3.6),
+                                        intake.setOutake(0.782)
                                 ),
                                 new SequentialAction(
                                         intake.setIntake(-0.4),
-                                        new SleepAction(0.1),
+                                        new SleepAction(0.15),
                                         intake.setIntake(0)
                                 )
                         ),
@@ -165,7 +165,7 @@ public class BlueClose extends LinearOpMode {
                         intake.setIntake(0.6),
                         new SleepAction(1.5),
                         new ParallelAction(
-                                intake.setTrigger(0.49),
+                                intake.setTrigger(0.48),
                                 intake.setOutake(0),
                                 intake.setIntake(0)
                         ),
