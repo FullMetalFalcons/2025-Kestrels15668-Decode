@@ -1,5 +1,9 @@
 package org.firstinspires.ftc.teamcode;
 
+import com.acmerobotics.roadrunner.ParallelAction;
+import com.acmerobotics.roadrunner.SequentialAction;
+import com.acmerobotics.roadrunner.SleepAction;
+import com.acmerobotics.roadrunner.ftc.Actions;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -21,7 +25,7 @@ public class FalconsTeleOpVelocityTesting extends LinearOpMode {
     boolean lastB, lastA, launchRunFar, launchRunClose, lastRB, intakeRun/*,blueRunNow*/;
 
     public static MecanumDrive.Params DRIVE_PARAMS = new MecanumDrive.Params();
-
+    KestrelIntake intake = new KestrelIntake(hardwareMap, telemetry);
 
     // The following code will run as soon as "INIT" is pressed on the Driver Station
     public void runOpMode() {
@@ -219,6 +223,54 @@ public class FalconsTeleOpVelocityTesting extends LinearOpMode {
                 lightLauncher.setPosition(0.279);
             } else {
                 lightLauncher.setPosition(0);
+            }
+
+            if (gamepad2.dpad_down) {
+                Actions.runBlocking(
+                        new SequentialAction(
+                                new ParallelAction(
+                                        intake.setTrigger(0.4),
+                                        intake.setOutake(0.784),
+                                        new SequentialAction(
+                                                intake.setIntake(-0.4),
+                                                new SleepAction(0.12),
+                                                intake.setIntake(0)
+                                        )
+                                ),
+                                new SleepAction(1.25),
+                                intake.setIntake(0.6),
+                                new SleepAction(1.5),
+                                new ParallelAction(
+                                        intake.setIntake(0),
+                                        intake.setOutake(0),
+                                        intake.setTrigger(0)
+                                )
+                        )
+                );
+            }
+
+            if (gamepad2.dpad_right) {
+                Actions.runBlocking(
+                        new SequentialAction(
+                                new ParallelAction(
+                                        intake.setTrigger(0.4),
+                                        intake.setOutake(0.972),
+                                        new SequentialAction(
+                                                intake.setIntake(-0.4),
+                                                new SleepAction(0.12),
+                                                intake.setIntake(0)
+                                        )
+                                ),
+                                new SleepAction(1.25),
+                                intake.setIntake(0.6),
+                                new SleepAction(1.5),
+                                new ParallelAction(
+                                        intake.setIntake(0),
+                                        intake.setOutake(0),
+                                        intake.setTrigger(0)
+                                )
+                        )
+                );
             }
 
             // If you want to print information to the Driver Station, use telemetry

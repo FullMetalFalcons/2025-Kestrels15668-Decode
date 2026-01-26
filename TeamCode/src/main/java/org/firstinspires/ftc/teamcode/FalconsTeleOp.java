@@ -30,6 +30,7 @@ public class FalconsTeleOp extends LinearOpMode {
     boolean lastB, lastA, launchRunFar, launchRunClose, lastRB, intakeRun/*,blueRunNow*/;
 
     public static MecanumDrive.Params DRIVE_PARAMS = new MecanumDrive.Params();
+    KestrelIntake intake = new KestrelIntake(hardwareMap, telemetry);
 
 
     // The following code will run as soon as "INIT" is pressed on the Driver Station
@@ -106,7 +107,6 @@ public class FalconsTeleOp extends LinearOpMode {
         redFar = drive.actionBuilder(initialPose)
                 .strafeToLinearHeading(new Vector2d(12,-58),Math.toRadians(24-90))
                 .build();
-
         blueRunNow = MecanumDrive.PARAMS.blueRun;*/
 
         // The program will pause here until the Play icon is pressed on the Driver Station
@@ -227,6 +227,54 @@ public class FalconsTeleOp extends LinearOpMode {
                 lightLauncher.setPosition(0.279);
             } else {
                 lightLauncher.setPosition(0);
+            }
+
+            if (gamepad2.dpad_down) {
+                Actions.runBlocking(
+                        new SequentialAction(
+                                new ParallelAction(
+                                    intake.setTrigger(0.4),
+                                    intake.setOutake(0.784),
+                                    new SequentialAction(
+                                        intake.setIntake(-0.4),
+                                        new SleepAction(0.12),
+                                        intake.setIntake(0)
+                                    )
+                                ),
+                                new SleepAction(1.25),
+                                intake.setIntake(0.6),
+                                new SleepAction(1.5),
+                                new ParallelAction(
+                                        intake.setIntake(0),
+                                        intake.setOutake(0),
+                                        intake.setTrigger(0)
+                                )
+                        )
+                );
+            }
+
+            if (gamepad2.dpad_right) {
+                Actions.runBlocking(
+                        new SequentialAction(
+                                new ParallelAction(
+                                        intake.setTrigger(0.4),
+                                        intake.setOutake(0.972),
+                                        new SequentialAction(
+                                                intake.setIntake(-0.4),
+                                                new SleepAction(0.12),
+                                                intake.setIntake(0)
+                                        )
+                                ),
+                                new SleepAction(1.25),
+                                intake.setIntake(0.6),
+                                new SleepAction(1.5),
+                                new ParallelAction(
+                                        intake.setIntake(0),
+                                        intake.setOutake(0),
+                                        intake.setTrigger(0)
+                                )
+                        )
+                );
             }
 
             // If you want to print information to the Driver Station, use telemetry
