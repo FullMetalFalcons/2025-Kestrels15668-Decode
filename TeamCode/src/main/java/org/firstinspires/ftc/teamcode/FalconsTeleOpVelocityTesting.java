@@ -230,7 +230,7 @@ public class FalconsTeleOpVelocityTesting extends LinearOpMode {
                         new SequentialAction(
                                 new ParallelAction(
                                         intake.setTrigger(0.4),
-                                        intake.setOutake(0.784),
+                                        intake.setOutakeVelocity(1800),
                                         new SequentialAction(
                                                 intake.setIntake(-0.4),
                                                 new SleepAction(0.12),
@@ -254,7 +254,7 @@ public class FalconsTeleOpVelocityTesting extends LinearOpMode {
                         new SequentialAction(
                                 new ParallelAction(
                                         intake.setTrigger(0.4),
-                                        intake.setOutake(0.972),
+                                        intake.setOutakeVelocity(2200),
                                         new SequentialAction(
                                                 intake.setIntake(-0.4),
                                                 new SleepAction(0.12),

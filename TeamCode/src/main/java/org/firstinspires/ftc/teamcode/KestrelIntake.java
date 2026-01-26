@@ -51,6 +51,19 @@ public class KestrelIntake {
     }
     public SetOutake setOutake(double outakeSpeed) { return new SetOutake(outakeSpeed); }
 
+    public class SetOutakeVelocity implements Action {
+        private double desiredOutakeVelocity;
+        public SetOutakeVelocity(double outakeVelocity) {
+            super();
+            desiredOutakeVelocity = outakeVelocity;
+        }
+        @Override
+        public boolean run (@NonNull TelemetryPacket packet) {
+            motorLaunch.setPower(desiredOutakeVelocity);
+            return false;
+        }
+    }
+    public SetOutakeVelocity setOutakeVelocity(double outakeVelocity) { return new SetOutakeVelocity(outakeVelocity); }
 
     public class SetTrigger implements Action {
         // Use constructor parameter to set target position
