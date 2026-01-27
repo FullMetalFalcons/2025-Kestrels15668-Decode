@@ -30,11 +30,12 @@ public class FalconsTeleOp extends LinearOpMode {
     boolean lastB, lastA, launchRunFar, launchRunClose, lastRB, intakeRun/*,blueRunNow*/;
 
     public static MecanumDrive.Params DRIVE_PARAMS = new MecanumDrive.Params();
-    KestrelIntake intake = new KestrelIntake(hardwareMap, telemetry);
 
 
     // The following code will run as soon as "INIT" is pressed on the Driver Station
     public void runOpMode() {
+
+        KestrelIntake intake = new KestrelIntake(hardwareMap, telemetry);
 
 
         //Define those motors and stuff
@@ -243,12 +244,14 @@ public class FalconsTeleOp extends LinearOpMode {
                                 ),
                                 new SleepAction(1.25),
                                 intake.setIntake(0.6),
-                                new SleepAction(1.5),
+                                new SleepAction(1.8),
                                 new ParallelAction(
                                         intake.setIntake(0),
-                                        intake.setOutake(0),
-                                        intake.setTrigger(0)
-                                )
+                                        intake.setOutake(0)
+
+                                ),
+                                new SleepAction(1),
+                                intake.setTrigger(0)
                         )
                 );
             }
@@ -267,12 +270,13 @@ public class FalconsTeleOp extends LinearOpMode {
                                 ),
                                 new SleepAction(1.25),
                                 intake.setIntake(0.6),
-                                new SleepAction(1.5),
+                                new SleepAction(2),
                                 new ParallelAction(
                                         intake.setIntake(0),
-                                        intake.setOutake(0),
-                                        intake.setTrigger(0)
-                                )
+                                        intake.setOutake(0)
+                                ),
+                                new SleepAction(1),
+                                intake.setTrigger(0)
                         )
                 );
             }

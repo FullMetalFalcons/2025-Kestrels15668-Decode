@@ -14,7 +14,7 @@ import com.qualcomm.robotcore.hardware.VoltageSensor;
 
 
 @TeleOp
-public class FalconsTeleOpVelocityTesting extends LinearOpMode {
+public class FalconsTeleOpVelocity extends LinearOpMode {
     //Action blueClose,blueFar,redClose,redFar;
     //Initialize motors, servos, sensors, imus, etc.
     DcMotorEx motorLF, motorRF, motorLB, motorRB, motorLaunch, motorRamp1, motorRamp2, motorIntake;
@@ -25,10 +25,18 @@ public class FalconsTeleOpVelocityTesting extends LinearOpMode {
     boolean lastB, lastA, launchRunFar, launchRunClose, lastRB, intakeRun/*,blueRunNow*/;
 
     public static MecanumDrive.Params DRIVE_PARAMS = new MecanumDrive.Params();
-    KestrelIntake intake = new KestrelIntake(hardwareMap, telemetry);
+    public static class Params2 {
+        public double p = 500;
+        public double i = 0;
+        public double d = 0;
+        public double f = 0;
+    }
+    public static Params2 PARAMS2 = new Params2();
 
     // The following code will run as soon as "INIT" is pressed on the Driver Station
     public void runOpMode() {
+
+        KestrelIntake intake = new KestrelIntake(hardwareMap, telemetry);
 
 
         //Define those motors and stuff
@@ -86,7 +94,7 @@ public class FalconsTeleOpVelocityTesting extends LinearOpMode {
         motorRB.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         motorLaunch.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
-        motorLaunch.setVelocityPIDFCoefficients(0, 0, 0, 5);
+        motorLaunch.setVelocityPIDFCoefficients(PARAMS2.p, PARAMS2.i, PARAMS2.d, PARAMS2.f);
         //Initial Pose for
         /*MecanumDrive drive = new MecanumDrive(hardwareMap, initialPose);
 
@@ -177,11 +185,11 @@ public class FalconsTeleOpVelocityTesting extends LinearOpMode {
             voltage = voltageSensor.getVoltage();
 
             if (gamepad2.b) {
-                motorLaunch.setVelocity(2200);
+                motorLaunch.setVelocity(2150);
             } else if (gamepad2.a) {
-                motorLaunch.setVelocity(1800);
+                motorLaunch.setVelocity(1750);
             } else {
-                motorLaunch.setPower(0);
+                motorLaunch.setVelocity(0);
             }
 
             if (gamepad1.right_bumper && !lastRB) {
@@ -225,12 +233,12 @@ public class FalconsTeleOpVelocityTesting extends LinearOpMode {
                 lightLauncher.setPosition(0);
             }
 
-            if (gamepad2.dpad_down) {
+            if (gamepad2.dpad_down || gamepad1.dpad_down) {
                 Actions.runBlocking(
                         new SequentialAction(
                                 new ParallelAction(
                                         intake.setTrigger(0.4),
-                                        intake.setOutakeVelocity(1800),
+                                        intake.setOutakeVelocity(1750),
                                         new SequentialAction(
                                                 intake.setIntake(-0.4),
                                                 new SleepAction(0.12),
@@ -242,19 +250,19 @@ public class FalconsTeleOpVelocityTesting extends LinearOpMode {
                                 new SleepAction(1.5),
                                 new ParallelAction(
                                         intake.setIntake(0),
-                                        intake.setOutake(0),
+                                        intake.setOutakeVelocity(0),
                                         intake.setTrigger(0)
                                 )
                         )
                 );
             }
 
-            if (gamepad2.dpad_right) {
+            if (gamepad2.dpad_right || gamepad1.dpad_right) {
                 Actions.runBlocking(
                         new SequentialAction(
                                 new ParallelAction(
                                         intake.setTrigger(0.4),
-                                        intake.setOutakeVelocity(2200),
+                                        intake.setOutakeVelocity(2150),
                                         new SequentialAction(
                                                 intake.setIntake(-0.4),
                                                 new SleepAction(0.12),
@@ -266,7 +274,7 @@ public class FalconsTeleOpVelocityTesting extends LinearOpMode {
                                 new SleepAction(1.5),
                                 new ParallelAction(
                                         intake.setIntake(0),
-                                        intake.setOutake(0),
+                                        intake.setOutakeVelocity(0),
                                         intake.setTrigger(0)
                                 )
                         )

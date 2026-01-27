@@ -32,6 +32,8 @@ public class KestrelIntake {
         motorLaunch.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         motorLaunch.setDirection(DcMotorSimple.Direction.REVERSE);
         motorIntake.setDirection(DcMotorSimple.Direction.REVERSE);
+        motorLaunch.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
 
 
     }
@@ -59,7 +61,7 @@ public class KestrelIntake {
         }
         @Override
         public boolean run (@NonNull TelemetryPacket packet) {
-            motorLaunch.setPower(desiredOutakeVelocity);
+            motorLaunch.setVelocity(desiredOutakeVelocity);
             return false;
         }
     }

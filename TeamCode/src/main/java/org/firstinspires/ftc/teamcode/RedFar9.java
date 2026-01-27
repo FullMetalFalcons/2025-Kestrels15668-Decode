@@ -104,15 +104,17 @@ public class RedFar9 extends LinearOpMode {
                                 intake.setTrigger(0.4),
                                 new SequentialAction(
                                         new SleepAction(0),
-                                        intake.setOutake(0.972)
+                                        //intake.setOutake(0.972)
+                                        intake.setOutakeVelocity(2150)
                                 )
                         ),
-                        new SleepAction(0.1), //1.25
+                        new SleepAction(0.15), //1.25
                         intake.setIntake(0.57),
                         new SleepAction(1.55),
                         new ParallelAction(
                                 intake.setTrigger(0.48),
-                                intake.setOutake(0),
+                                //intake.setOutake(0),
+                                intake.setOutakeVelocity(0),
                                 intake.setIntake(0)
                         ),
 
@@ -130,7 +132,8 @@ public class RedFar9 extends LinearOpMode {
                                         new SleepAction(0.5),
                                         intake.setOutake(0),
                                         new SleepAction(2.3),
-                                        intake.setOutake(0.972)
+                                        //intake.setOutake(0.972)
+                                        intake.setOutakeVelocity(2150)
                                 ),
                                 new SequentialAction(
                                         intake.setIntake(-0.4),
@@ -143,7 +146,8 @@ public class RedFar9 extends LinearOpMode {
                         new SleepAction(1.5),
                         new ParallelAction(
                                 intake.setTrigger(0.48),
-                                intake.setOutake(0),
+                                intake.setOutakeVelocity(0),
+                                //intake.setOutake(0),
                                 intake.setIntake(0)
                         ),
 
@@ -163,8 +167,8 @@ public class RedFar9 extends LinearOpMode {
 
                         gotoHP,
                         intake.setIntake(0.8),
-                        new SleepAction(0.5),
                         pickupHP,
+                        new SleepAction(0.5),
                         intake.setIntake(0),
 
                         new ParallelAction(
@@ -175,7 +179,8 @@ public class RedFar9 extends LinearOpMode {
                                         new SleepAction(0.5),
                                         intake.setOutake(0),
                                         new SleepAction(2.3),
-                                        intake.setOutake(0.972)
+                                        intake.setOutakeVelocity(2150)
+                                        //intake.setOutake(0.972)
                                 ),
                                 new SequentialAction(
                                         intake.setIntake(-0.4),
@@ -188,7 +193,8 @@ public class RedFar9 extends LinearOpMode {
                         new SleepAction(1.5),
                         new ParallelAction(
                                 intake.setTrigger(0.48),
-                                intake.setOutake(0),
+                                intake.setOutakeVelocity(0),
+                                //intake.setOutake(0),
                                 intake.setIntake(0)
                         ),
 
