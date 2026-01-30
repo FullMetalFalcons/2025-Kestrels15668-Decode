@@ -51,14 +51,14 @@ public class BlueFar extends LinearOpMode {
                 .build();
 
         launch1 = drive.actionBuilder(new Pose2d(-52-12,24-62,Math.toRadians(180)))
-                .strafeTo(new Vector2d(-12,24+24-62))
-                .turn(Math.toRadians(90+23.5))
+                .strafeTo(new Vector2d(-12-3,24+24+2-62))
+                .turn(Math.toRadians(90+23.5+1))
                 //.strafeToLinearHeading(new Vector2d(0,4),Math.toRadians(23))
                 .build();
 
-        park = drive.actionBuilder(new Pose2d(-12,48-62,Math.toRadians(-90+23.5)))
-                .turn(Math.toRadians(-23.5))
-                .strafeTo(new Vector2d(-12,48+24-62))
+        park = drive.actionBuilder(new Pose2d(-12-3,48+2-62,Math.toRadians(-90+23.5+1)))
+                .turn(Math.toRadians(-23.5-1))
+                .strafeTo(new Vector2d(-12-3,48+24+2-62))
                 //.strafeToLinearHeading(new Vector2d(0,24),Math.toRadians(-90))
                 .build();
 
@@ -83,12 +83,12 @@ public class BlueFar extends LinearOpMode {
                                 new SequentialAction(
                                         new SleepAction(0),
                                         //intake.setOutake(0.972)
-                                        intake.setOutakeVelocity(2150)
+                                        intake.setOutakeVelocity(2140)
                                 )
                         ),
-                        new SleepAction(0.1), //1.25
+                        new SleepAction(0.155), //1.25
                         intake.setIntake(0.57),
-                        new SleepAction(1.55),
+                        new SleepAction(1.5),
                         new ParallelAction(
                                 intake.setTrigger(0.48),
                                 //intake.setOutake(0),
@@ -110,9 +110,9 @@ public class BlueFar extends LinearOpMode {
                                         intake.setOutake(-0.1),
                                         new SleepAction(0.5),
                                         intake.setOutake(0),
-                                        new SleepAction(2.4),
+                                        new SleepAction(2.2),
                                         //intake.setOutake(0.972)
-                                        intake.setOutakeVelocity(2150)
+                                        intake.setOutakeVelocity(2140)
                                 ),
                                 new SequentialAction(
                                         intake.setIntake(-0.4),
@@ -121,7 +121,7 @@ public class BlueFar extends LinearOpMode {
                                 )
                         ),
                         new SleepAction(0.5), //1.25
-                        intake.setIntake(0.7),
+                        intake.setIntake(0.57),
                         new SleepAction(1.5),
                         new ParallelAction(
                                 intake.setTrigger(0.48),

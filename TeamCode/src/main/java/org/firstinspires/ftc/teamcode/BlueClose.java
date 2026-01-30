@@ -69,12 +69,12 @@ public class BlueClose extends LinearOpMode {
         launch2 = drive.actionBuilder(new Pose2d(-52-12,-21,Math.toRadians(-180)))
                 .strafeTo(new Vector2d(-40-12,-21))
                 .strafeTo(new Vector2d(-12,-48))
-                .turn(Math.toRadians(135))
+                .turn(Math.toRadians(134.5))
                 //.strafeToLinearHeading(new Vector2d(0+36,-48),Math.toRadians(-45))
                 .build();
 
-        park = drive.actionBuilder(new Pose2d(-12,-48,Math.toRadians(-45)))
-                .turn(Math.toRadians(-45))
+        park = drive.actionBuilder(new Pose2d(-12,-48,Math.toRadians(-45.5)))
+                .turn(Math.toRadians(-44.5))
                 .strafeTo(new Vector2d(-12,-72))
                 //.strafeToLinearHeading(new Vector2d(0,-72),Math.toRadians(-90))
                 .build();
@@ -92,7 +92,7 @@ public class BlueClose extends LinearOpMode {
                                 new SequentialAction(
                                         new SleepAction(0.9),
                                         //intake.setOutake(0.784)
-                                        intake.setOutakeVelocity(1750)
+                                        intake.setOutakeVelocity(1530)
                                 )
                         ),
                         new SleepAction(0.1), //1.25
@@ -129,7 +129,7 @@ public class BlueClose extends LinearOpMode {
                                 new SequentialAction(
                                         new SleepAction(2.2),
                                         //intake.setOutake(0.784)
-                                        intake.setOutakeVelocity(1750)
+                                        intake.setOutakeVelocity(1530)
                                 ),
                                 new SequentialAction(
                                         intake.setIntake(-0.4),
@@ -158,11 +158,11 @@ public class BlueClose extends LinearOpMode {
                                 new SequentialAction(
                                         new SleepAction(3.6),
                                         //intake.setOutake(0.782)
-                                        intake.setOutakeVelocity(1750)
+                                        intake.setOutakeVelocity(1530)
                                 ),
                                 new SequentialAction(
                                         intake.setIntake(-0.4),
-                                        new SleepAction(0.15),
+                                        new SleepAction(0.1),
                                         intake.setIntake(0)
                                 )
                         ),

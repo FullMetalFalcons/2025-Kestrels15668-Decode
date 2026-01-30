@@ -90,7 +90,7 @@ public class RedClose extends LinearOpMode {
                                 new SequentialAction(
                                         new SleepAction(0.9),
                                         //intake.setOutake(0.784)
-                                        intake.setOutakeVelocity(1750)
+                                        intake.setOutakeVelocity(1530)
                                 )
                         ),
                         new SleepAction(0.1), //1.25
@@ -127,7 +127,7 @@ public class RedClose extends LinearOpMode {
                                 new SequentialAction(
                                         new SleepAction(2.2),
                                         //intake.setOutake(0.784)
-                                        intake.setOutakeVelocity(1750)
+                                        intake.setOutakeVelocity(1530)
                                 ),
                                 new SequentialAction(
                                         intake.setIntake(-0.4),
@@ -156,11 +156,11 @@ public class RedClose extends LinearOpMode {
                                 new SequentialAction(
                                         new SleepAction(3.6),
                                         //intake.setOutake(0.782)
-                                        intake.setOutakeVelocity(1750)
+                                        intake.setOutakeVelocity(1530)
                                 ),
                                 new SequentialAction(
                                         intake.setIntake(-0.4),
-                                        new SleepAction(0.15),
+                                        new SleepAction(0.1),
                                         intake.setIntake(0)
                                 )
                         ),

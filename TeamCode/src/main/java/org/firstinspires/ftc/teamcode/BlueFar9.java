@@ -102,12 +102,12 @@ public class BlueFar9 extends LinearOpMode {
                                 new SequentialAction(
                                         new SleepAction(0),
                                         //intake.setOutake(0.972)
-                                        intake.setOutakeVelocity(2150)
+                                        intake.setOutakeVelocity(2170)
                                 )
                         ),
-                        new SleepAction(0.1), //1.25
+                        new SleepAction(0.155), //1.25
                         intake.setIntake(0.57),
-                        new SleepAction(1.55),
+                        new SleepAction(1.5),
                         new ParallelAction(
                                 intake.setTrigger(0.48),
                                 //intake.setOutake(0),
@@ -129,9 +129,9 @@ public class BlueFar9 extends LinearOpMode {
                                         intake.setOutake(-0.1),
                                         new SleepAction(0.5),
                                         intake.setOutake(0),
-                                        new SleepAction(2.3),
+                                        new SleepAction(2.2),
                                         //intake.setOutake(0.972)
-                                        intake.setOutakeVelocity(2150)
+                                        intake.setOutakeVelocity(2170)
                                 ),
                                 new SequentialAction(
                                         intake.setIntake(-0.4),
@@ -140,7 +140,7 @@ public class BlueFar9 extends LinearOpMode {
                                 )
                         ),
                         new SleepAction(0.5), //1.25
-                        intake.setIntake(0.7),
+                        intake.setIntake(0.57),
                         new SleepAction(1.5),
                         new ParallelAction(
                                 intake.setTrigger(0.48),
@@ -178,7 +178,7 @@ public class BlueFar9 extends LinearOpMode {
                                         intake.setOutake(0),
                                         new SleepAction(2.3),
                                         //intake.setOutake(0.972)
-                                        intake.setOutakeVelocity(2150)
+                                        intake.setOutakeVelocity(2170)
                                 ),
                                 new SequentialAction(
                                         intake.setIntake(-0.4),
@@ -187,7 +187,7 @@ public class BlueFar9 extends LinearOpMode {
                                 )
                         ),
                         new SleepAction(0.5), //1.25
-                        intake.setIntake(0.7),
+                        intake.setIntake(0.57),
                         new SleepAction(1.5),
                         new ParallelAction(
                                 intake.setTrigger(0.48),

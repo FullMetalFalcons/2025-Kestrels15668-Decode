@@ -247,7 +247,7 @@ public class FalconsTeleOpVelocity extends LinearOpMode {
                                 ),
                                 new SleepAction(1.25),
                                 intake.setIntake(0.6),
-                                new SleepAction(1.5),
+                                new SleepAction(2),
                                 new ParallelAction(
                                         intake.setIntake(0),
                                         intake.setOutakeVelocity(0),
@@ -271,7 +271,7 @@ public class FalconsTeleOpVelocity extends LinearOpMode {
                                 ),
                                 new SleepAction(1.25),
                                 intake.setIntake(0.6),
-                                new SleepAction(1.5),
+                                new SleepAction(2),
                                 new ParallelAction(
                                         intake.setIntake(0),
                                         intake.setOutakeVelocity(0),
