@@ -186,7 +186,7 @@ public class FalconsTeleOpVelocity extends LinearOpMode {
             voltage = voltageSensor.getVoltage();
 
             if (gamepad2.b) {
-                motorLaunch.setVelocity(2150);
+                motorLaunch.setVelocity(2040);
             } else if (gamepad2.a) {
                 motorLaunch.setVelocity(1750);
             } else {
@@ -222,7 +222,7 @@ public class FalconsTeleOpVelocity extends LinearOpMode {
                 servoTrigger.setPosition(0.48);
             }
 
-            if (motorLaunch.getVelocity() > 1600 && gamepad2.b) {
+            if (motorLaunch.getVelocity() > 1750 && gamepad2.b) {
                 lightLauncher.setPosition(0.611);
             } else if (gamepad2.b /*|| (gamepad2.b && (gamepad1.left_stick_x > 0.1 || gamepad1.left_stick_y > 0.1 || gamepad1.right_stick_x > 0.1 || gamepad1.right_stick_y > 0.1))*/) {
                 lightLauncher.setPosition(0.279);
@@ -263,7 +263,7 @@ public class FalconsTeleOpVelocity extends LinearOpMode {
                         new SequentialAction(
                                 new ParallelAction(
                                         intake.setTrigger(0.4),
-                                        intake.setOutakeVelocity(2150),
+                                        intake.setOutakeVelocity(2040),
                                         new SequentialAction(
                                                 intake.setIntake(-0.4),
                                                 new SleepAction(0.12),

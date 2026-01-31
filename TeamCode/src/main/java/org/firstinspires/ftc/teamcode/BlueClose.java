@@ -69,7 +69,7 @@ public class BlueClose extends LinearOpMode {
                                 preload.build(),
                                 intake.setTrigger(0.4),
                                 new SequentialAction(
-                                        new SleepAction(0.9),
+                                        new SleepAction(1.0),
                                         //intake.setOutake(0.784)
                                         intake.setOutakeVelocity(1530)
                                 )

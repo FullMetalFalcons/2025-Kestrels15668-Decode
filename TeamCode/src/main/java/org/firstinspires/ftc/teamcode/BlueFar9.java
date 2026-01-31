@@ -31,10 +31,10 @@ public class BlueFar9 extends LinearOpMode {
 
         preload = drive.actionBuilder(initialPose)
                 .strafeTo(new Vector2d(-12,4))
-                .turn(Math.toRadians(23.5));
+                .turn(Math.toRadians(24.5));
 
         goto1 = preload.endTrajectory().fresh()
-                .turn(Math.toRadians(-23.5))
+                .turn(Math.toRadians(-24.5))
                 .strafeTo(new Vector2d(-12,24))
                 .turn(Math.toRadians(-90));
 
@@ -43,24 +43,24 @@ public class BlueFar9 extends LinearOpMode {
 
         launch1 = pickup1.endTrajectory().fresh()
                 .strafeTo(new Vector2d(-12,48-4))
-                .turn(Math.toRadians(90+23.5));
+                .turn(Math.toRadians(90+24.5));
 
         gotoHP = launch1.endTrajectory().fresh()
-                .turn(Math.toRadians(-23.5))
+                .turn(Math.toRadians(-24.5))
                 .strafeTo(new Vector2d(-12,48+12)) //12
                 .turn(Math.toRadians(-90+15));
 
         pickupHP = gotoHP.endTrajectory().fresh()
-                .strafeTo(new Vector2d(-50-12,48+2))
+                .strafeTo(new Vector2d(-50-12,48))
                 .waitSeconds(0.2)
-                .strafeTo(new Vector2d(-51-12,48+4));
+                .strafeTo(new Vector2d(-51-12,48+6));
 
         launchHP = pickupHP.endTrajectory().fresh()
-                .strafeTo(new Vector2d(-12-9,48+25)) // -12,4
-                .turn(Math.toRadians(90-15+23.5));
+                .strafeTo(new Vector2d(-12-10,48+25)) // -12,4
+                .turn(Math.toRadians(90-15+24.5));
 
         park = launchHP.endTrajectory().fresh()
-                .turn(Math.toRadians(-23.5))
+                .turn(Math.toRadians(-24.5))
                 .strafeTo(new Vector2d(-12-9,48+25+24));
 
         waitForStart();
@@ -73,7 +73,7 @@ public class BlueFar9 extends LinearOpMode {
                                 intake.setTrigger(0.4),
                                 new SequentialAction(
                                         new SleepAction(0),
-                                        intake.setOutakeVelocity(2170)
+                                        intake.setOutakeVelocity(1920)
                                 )
                         ),
                         new SleepAction(0.155),
@@ -98,11 +98,11 @@ public class BlueFar9 extends LinearOpMode {
                                         new SleepAction(0.5),
                                         intake.setOutake(0),
                                         new SleepAction(2.2),
-                                        intake.setOutakeVelocity(2170)
+                                        intake.setOutakeVelocity(1920)
                                 ),
                                 new SequentialAction(
                                         intake.setIntake(-0.4),
-                                        new SleepAction(0.15),
+                                        new SleepAction(0.2),
                                         intake.setIntake(0)
                                 )
                         ),
@@ -127,12 +127,12 @@ public class BlueFar9 extends LinearOpMode {
                                         intake.setOutake(-0.1),
                                         new SleepAction(0.5),
                                         intake.setOutake(0),
-                                        new SleepAction(2.3),
-                                        intake.setOutakeVelocity(2170)
+                                        new SleepAction(1.9),
+                                        intake.setOutakeVelocity(1920)
                                 ),
                                 new SequentialAction(
                                         intake.setIntake(-0.4),
-                                        new SleepAction(0.15),
+                                        new SleepAction(0.25),
                                         intake.setIntake(0)
                                 )
                         ),
