@@ -8,6 +8,7 @@ import com.acmerobotics.roadrunner.ParallelAction;
 import com.acmerobotics.roadrunner.Pose2d;
 import com.acmerobotics.roadrunner.SequentialAction;
 import com.acmerobotics.roadrunner.SleepAction;
+import com.acmerobotics.roadrunner.TrajectoryActionBuilder;
 import com.acmerobotics.roadrunner.Vector2d;
 import com.acmerobotics.roadrunner.ftc.Actions;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
@@ -21,116 +22,82 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 @Autonomous
 public class BlueFar9 extends LinearOpMode {
     public void runOpMode() {
-        Pose2d initialPose = new Pose2d(-12,-62,Math.toRadians(-90));
+        Pose2d initialPose = new Pose2d(-12,0,Math.toRadians(-90));
         MecanumDrive drive = new MecanumDrive(hardwareMap, initialPose);
         KestrelIntake intake = new KestrelIntake(hardwareMap, telemetry);
         FalconsTeleOp teleop = new FalconsTeleOp();
 
-        Action preload;
-        Action goto1;
-        Action pickup1;
-        Action launch1;
-        Action gotoHP;
-        Action pickupHP;
-        Action launchHP;
-        Action park;
+        TrajectoryActionBuilder preload, goto1, pickup1, launch1, gotoHP, pickupHP, launchHP, park;
 
         preload = drive.actionBuilder(initialPose)
-                .strafeTo(new Vector2d(-12,4-62))
-                .turn(Math.toRadians(23.5))
-                //.strafeToLinearHeading(new Vector2d(0,4),Math.toRadians(-90+24))
-                .build();
+                .strafeTo(new Vector2d(-12,4))
+                .turn(Math.toRadians(23.5));
 
-        goto1 = drive.actionBuilder(new Pose2d(-12,4-62,Math.toRadians(-90+23.5)))
+        goto1 = preload.endTrajectory().fresh()
                 .turn(Math.toRadians(-23.5))
-                .strafeTo(new Vector2d(-12,24-62))
-                .turn(Math.toRadians(-90))
-                //.strafeToLinearHeading(new Vector2d(-12,26),Math.toRadians(-24))
-                .build();
+                .strafeTo(new Vector2d(-12,24))
+                .turn(Math.toRadians(-90));
 
-        pickup1 = drive.actionBuilder(new Pose2d(-12,24-62,Math.toRadians(180)))
-                .strafeTo(new Vector2d(-52-12,24-62))
-                .build();
+        pickup1 = goto1.endTrajectory().fresh()
+                .strafeTo(new Vector2d(-48-12,24));
 
-        launch1 = drive.actionBuilder(new Pose2d(-52-12,24-62,Math.toRadians(180)))
-                .strafeTo(new Vector2d(-12,48-62))
-                .turn(Math.toRadians(90+23.5))
-                //.strafeToLinearHeading(new Vector2d(0,4),Math.toRadians(23))
-                .build();
+        launch1 = pickup1.endTrajectory().fresh()
+                .strafeTo(new Vector2d(-12,48-4))
+                .turn(Math.toRadians(90+23.5));
 
-        gotoHP = drive.actionBuilder(new Pose2d(-12,48-62,Math.toRadians(-90+23.5)))
+        gotoHP = launch1.endTrajectory().fresh()
                 .turn(Math.toRadians(-23.5))
-                .strafeTo(new Vector2d(-12,48-62))
-                .turn(Math.toRadians(-90))
-                //.strafeToLinearHeading(new Vector2d(12,26),Math.toRadians(0))
-                .build();
+                .strafeTo(new Vector2d(-12,48+12)) //12
+                .turn(Math.toRadians(-90+15));
 
-        pickupHP = drive.actionBuilder(new Pose2d(-12,48-62,Math.toRadians(180)))
-                .strafeTo(new Vector2d(-52-12,48+8-62))
-                .build();
+        pickupHP = gotoHP.endTrajectory().fresh()
+                .strafeTo(new Vector2d(-50-12,48+2))
+                .waitSeconds(0.2)
+                .strafeTo(new Vector2d(-51-12,48+4));
 
-        launchHP = drive.actionBuilder(new Pose2d(-52-12,48+8-62,Math.toRadians(180)))
-                .strafeTo(new Vector2d(-12,48-62))
-                .turn(Math.toRadians(90+23.5))
-                //.strafeToLinearHeading(new Vector2d(0,4),Math.toRadians(-90-23))
-                .build();
+        launchHP = pickupHP.endTrajectory().fresh()
+                .strafeTo(new Vector2d(-12-9,48+25)) // -12,4
+                .turn(Math.toRadians(90-15+23.5));
 
-        park = drive.actionBuilder(new Pose2d(-12,48-62,Math.toRadians(-90+23.5)))
+        park = launchHP.endTrajectory().fresh()
                 .turn(Math.toRadians(-23.5))
-                .strafeTo(new Vector2d(-12,48+24-62))
-                //.strafeToLinearHeading(new Vector2d(0,24),Math.toRadians(-90))
-                .build();
+                .strafeTo(new Vector2d(-12-9,48+25+24));
 
         waitForStart();
         if (isStopRequested()) return;
 
         Actions.runBlocking(
                 new SequentialAction(
-                        /*preload,
-                        intake.setTrigger(0.4),
-                        intake.setOutake(0.96), //13.55V
-                        new SleepAction(1.25),
-                        intake.setIntake(0.6),
-                        new SleepAction(1.5),
-                        intake.setTrigger(0.49),
-                        intake.setOutake(0),
-                        intake.setIntake(0),*/
-
                         new ParallelAction(
-                                preload,
+                                preload.build(),
                                 intake.setTrigger(0.4),
                                 new SequentialAction(
                                         new SleepAction(0),
-                                        //intake.setOutake(0.972)
                                         intake.setOutakeVelocity(2170)
                                 )
                         ),
-                        new SleepAction(0.155), //1.25
+                        new SleepAction(0.155),
                         intake.setIntake(0.57),
                         new SleepAction(1.5),
                         new ParallelAction(
                                 intake.setTrigger(0.48),
-                                //intake.setOutake(0),
                                 intake.setOutakeVelocity(0),
                                 intake.setIntake(0)
                         ),
 
-                        goto1,
+                        goto1.build(),
                         intake.setIntake(0.8),
-
-                        new SleepAction(0.1),
-                        pickup1,
+                        pickup1.build(),
                         intake.setIntake(0),
 
                         new ParallelAction(
-                                launch1,
+                                launch1.build(),
                                 intake.setTrigger(0.4),
                                 new SequentialAction(
                                         intake.setOutake(-0.1),
                                         new SleepAction(0.5),
                                         intake.setOutake(0),
                                         new SleepAction(2.2),
-                                        //intake.setOutake(0.972)
                                         intake.setOutakeVelocity(2170)
                                 ),
                                 new SequentialAction(
@@ -139,45 +106,28 @@ public class BlueFar9 extends LinearOpMode {
                                         intake.setIntake(0)
                                 )
                         ),
-                        new SleepAction(0.5), //1.25
+                        new SleepAction(0.5),
                         intake.setIntake(0.57),
                         new SleepAction(1.5),
                         new ParallelAction(
                                 intake.setTrigger(0.48),
-                                //intake.setOutake(0),
                                 intake.setOutakeVelocity(0),
                                 intake.setIntake(0)
                         ),
 
-                        /*launch1,
-                        intake.setIntake(-0.4),
-                        new SleepAction(0.15),
-                        intake.setIntake(0),
-                        intake.setTrigger(0.4),
-                        intake.setOutake(0.96),
-                        new SleepAction(1.25),
-                        intake.setIntake(0.6),
-                        new SleepAction(1.5),
-                        intake.setTrigger(0.49),
-                        intake.setOutake(0),
-                        intake.setIntake(0),
-                        new SleepAction(2),*/
-
-                        gotoHP,
+                        gotoHP.build(),
                         intake.setIntake(0.8),
-                        new SleepAction(0.5),
-                        pickupHP,
-                        intake.setIntake(0),
+                        pickupHP.build(),
+                        new SleepAction(1.5),
 
                         new ParallelAction(
-                                launchHP,
+                                launchHP.build(),
                                 intake.setTrigger(0.4),
                                 new SequentialAction(
                                         intake.setOutake(-0.1),
                                         new SleepAction(0.5),
                                         intake.setOutake(0),
                                         new SleepAction(2.3),
-                                        //intake.setOutake(0.972)
                                         intake.setOutakeVelocity(2170)
                                 ),
                                 new SequentialAction(
@@ -186,20 +136,19 @@ public class BlueFar9 extends LinearOpMode {
                                         intake.setIntake(0)
                                 )
                         ),
-                        new SleepAction(0.5), //1.25
+                        new SleepAction(0.5),
                         intake.setIntake(0.57),
                         new SleepAction(1.5),
                         new ParallelAction(
                                 intake.setTrigger(0.48),
-                                //intake.setOutake(0),
                                 intake.setOutakeVelocity(0),
                                 intake.setIntake(0)
                         ),
 
-                        park
-                )
+                        park.build()
+                        )
         );
-        //teleop.initialPose = new Pose2d(new Vector2d(-12 ,50+24-62), Math.toRadians(-90));
+        //teleop.initialPose = new Pose2d(new Vector2d(-12 ,50+24), Math.toRadians(-90));
         //MecanumDrive.PARAMS.blueRun = true;
 
 

@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.acmerobotics.roadrunner.ParallelAction;
+import com.acmerobotics.roadrunner.Pose2d;
 import com.acmerobotics.roadrunner.SequentialAction;
 import com.acmerobotics.roadrunner.SleepAction;
 import com.acmerobotics.roadrunner.ftc.Actions;
@@ -37,7 +38,7 @@ public class FalconsTeleOpVelocity extends LinearOpMode {
     public void runOpMode() {
 
         KestrelIntake intake = new KestrelIntake(hardwareMap, telemetry);
-
+        MecanumDrive drive = new MecanumDrive(hardwareMap, new Pose2d(0,0,Math.toRadians(-90)));
 
         //Define those motors and stuff
         //The string should be the name on the Driver Hub
@@ -311,6 +312,8 @@ public class FalconsTeleOpVelocity extends LinearOpMode {
                 telemetry.addData("servoPosition", servoTrigger.getPosition());
             telemetry.addData("voltage", voltage);
             telemetry.addData("launchRPM", motorLaunch.getVelocity());
+            drive.localizer.update();
+            telemetry.addData("pose", drive.localizer.getPose());
 
             telemetry.update();
 

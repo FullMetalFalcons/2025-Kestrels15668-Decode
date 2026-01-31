@@ -8,6 +8,7 @@ import com.acmerobotics.roadrunner.ParallelAction;
 import com.acmerobotics.roadrunner.Pose2d;
 import com.acmerobotics.roadrunner.SequentialAction;
 import com.acmerobotics.roadrunner.SleepAction;
+import com.acmerobotics.roadrunner.TrajectoryActionBuilder;
 import com.acmerobotics.roadrunner.Vector2d;
 import com.acmerobotics.roadrunner.ftc.Actions;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
@@ -26,58 +27,36 @@ public class BlueClose extends LinearOpMode {
         KestrelIntake intake = new KestrelIntake(hardwareMap, telemetry);
         FalconsTeleOp teleop = new FalconsTeleOp();
 
-        Action preload;
-        Action goto1;
-        Action pickup1;
-        Action launch1;
-        Action goto2;
-        Action pickup2;
-        Action launch2;
-        Action park;
+        TrajectoryActionBuilder preload, goto1, pickup1, launch1, goto2, pickup2, launch2, park;
 
         preload = drive.actionBuilder(initialPose)
-                //.strafeTo(new Vector2d(0,-50))
-                //.turn(Math.toRadians(45))
+                .strafeTo(new Vector2d(-12,-48));
+
+        goto1 = preload.endTrajectory().fresh()
+                .turn(Math.toRadians(-135));
+
+        pickup1 = goto1.endTrajectory().fresh()
+                .strafeTo(new Vector2d(-40-12,-48));
+
+        launch1 = pickup1.endTrajectory().fresh()
                 .strafeTo(new Vector2d(-12,-48))
-                .build();
+                .turn(Math.toRadians(135));
 
-        goto1 = drive.actionBuilder(new Pose2d(-12,-48,Math.toRadians(-45)))
+        goto2 = launch1.endTrajectory().fresh()
                 .turn(Math.toRadians(-135))
-                //.strafeToLinearHeading(new Vector2d(-12,-48),Math.toRadians(-180))
-                .build();
+                .strafeTo(new Vector2d(-10-12,-21)); //y should be -72
 
-        pickup1 = drive.actionBuilder(new Pose2d(-12,-48,Math.toRadians(-180)))
-                .strafeTo(new Vector2d(-40-12,-48))
-                .build();
+        pickup2 = goto2.endTrajectory().fresh()
+                .strafeTo(new Vector2d(-52-12,-21));
 
-        launch1 = drive.actionBuilder(new Pose2d(-40-12,-48 ,Math.toRadians(-180)))
-                .strafeTo(new Vector2d(-12,-48))
-                .turn(Math.toRadians(135))
-                //.strafeToLinearHeading(new Vector2d(0+36,-48),Math.toRadians(-45))
-                .build();
-
-        goto2 = drive.actionBuilder(new Pose2d(-12,-48,Math.toRadians(-45)))
-                .turn(Math.toRadians(-135))
-                .strafeTo(new Vector2d(-10-12,-21)) //y should be -72
-                //.strafeToLinearHeading(new Vector2d(-12,-72),Math.toRadians(-180))
-                .build();
-
-        pickup2 = drive.actionBuilder(new Pose2d(-10-12,-21,Math.toRadians(-180)))
-                .strafeTo(new Vector2d(-52-12,-21))
-                .build();
-
-        launch2 = drive.actionBuilder(new Pose2d(-52-12,-21,Math.toRadians(-180)))
+        launch2 = pickup2.endTrajectory().fresh()
                 .strafeTo(new Vector2d(-40-12,-21))
                 .strafeTo(new Vector2d(-12,-48))
-                .turn(Math.toRadians(134.5))
-                //.strafeToLinearHeading(new Vector2d(0+36,-48),Math.toRadians(-45))
-                .build();
+                .turn(Math.toRadians(134.5));
 
-        park = drive.actionBuilder(new Pose2d(-12,-48,Math.toRadians(-45.5)))
+        park = launch2.endTrajectory().fresh()
                 .turn(Math.toRadians(-44.5))
-                .strafeTo(new Vector2d(-12,-72))
-                //.strafeToLinearHeading(new Vector2d(0,-72),Math.toRadians(-90))
-                .build();
+                .strafeTo(new Vector2d(-12,-72));
 
 
 
@@ -87,7 +66,7 @@ public class BlueClose extends LinearOpMode {
         Actions.runBlocking(
                 new SequentialAction(
                         new ParallelAction(
-                                preload,
+                                preload.build(),
                                 intake.setTrigger(0.4),
                                 new SequentialAction(
                                         new SleepAction(0.9),
@@ -105,9 +84,9 @@ public class BlueClose extends LinearOpMode {
                                 intake.setIntake(0)
                         ),
 
-                        goto1,
+                        goto1.build(),
                         intake.setIntake(0.8),
-                        pickup1,
+                        pickup1.build(),
                         intake.setIntake(0),
 
                         /*launch1,
@@ -124,7 +103,7 @@ public class BlueClose extends LinearOpMode {
                         intake.setIntake(0), */
 
                         new ParallelAction(
-                                launch1,
+                                launch1.build(),
                                 intake.setTrigger(0.4),
                                 new SequentialAction(
                                         new SleepAction(2.2),
@@ -147,13 +126,13 @@ public class BlueClose extends LinearOpMode {
                                 intake.setIntake(0)
                         ),
 
-                        goto2,
+                        goto2.build(),
                         intake.setIntake(0.8),
-                        pickup2,
+                        pickup2.build(),
                         intake.setIntake(0),
 
                         new ParallelAction(
-                                launch2,
+                                launch2.build(),
                                 intake.setTrigger(0.4),
                                 new SequentialAction(
                                         new SleepAction(3.6),
@@ -189,7 +168,7 @@ public class BlueClose extends LinearOpMode {
                         intake.setOutake(0),
                         intake.setIntake(0),*/
 
-                        park
+                        park.build()
 
                 )
         );
