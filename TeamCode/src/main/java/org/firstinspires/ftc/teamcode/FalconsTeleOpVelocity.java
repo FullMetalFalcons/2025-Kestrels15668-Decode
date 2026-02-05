@@ -13,6 +13,8 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.VoltageSensor;
 
+import org.firstinspires.ftc.vision.apriltag.AprilTagDetection;
+
 
 @TeleOp
 public class FalconsTeleOpVelocity extends LinearOpMode {
@@ -25,20 +27,14 @@ public class FalconsTeleOpVelocity extends LinearOpMode {
     double reverse, voltage;
     boolean lastB, lastA, launchRunFar, launchRunClose, lastRB, intakeRun/*,blueRunNow*/;
 
+
     public static MecanumDrive.Params DRIVE_PARAMS = new MecanumDrive.Params();
-    public static class Params2 {
-        public double p = 500;
-        public double i = 0;
-        public double d = 0;
-        public double f = 0;
-    }
-    public static Params2 PARAMS2 = new Params2();
 
     // The following code will run as soon as "INIT" is pressed on the Driver Station
     public void runOpMode() {
-
         KestrelIntake intake = new KestrelIntake(hardwareMap, telemetry);
-        MecanumDrive drive = new MecanumDrive(hardwareMap, new Pose2d(0,0,Math.toRadians(-90)));
+        Webcam webcam = new Webcam(hardwareMap);
+        webcam.init(hardwareMap, telemetry);
 
         //Define those motors and stuff
         //The string should be the name on the Driver Hub
@@ -95,24 +91,7 @@ public class FalconsTeleOpVelocity extends LinearOpMode {
         motorRB.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         motorLaunch.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
-        motorLaunch.setVelocityPIDFCoefficients(PARAMS2.p, PARAMS2.i, PARAMS2.d, PARAMS2.f);
-        //Initial Pose for
-        /*MecanumDrive drive = new MecanumDrive(hardwareMap, initialPose);
-
-        blueClose = drive.actionBuilder(initialPose)
-                .strafeToLinearHeading(new Vector2d(-12,12),Math.toRadians(-45))
-                .build();
-        blueFar = drive.actionBuilder(initialPose)
-                .strafeToLinearHeading(new Vector2d(-12,-58),Math.toRadians(-24-90))
-                .build();
-        redClose = drive.actionBuilder(initialPose)
-                .strafeToLinearHeading(new Vector2d(12,12),Math.toRadians(-135))
-                .build();
-        redFar = drive.actionBuilder(initialPose)
-                .strafeToLinearHeading(new Vector2d(12,-58),Math.toRadians(24-90))
-                .build();
-
-        blueRunNow = MecanumDrive.PARAMS.blueRun;*/
+        motorLaunch.setVelocityPIDFCoefficients(500, 0, 0, 0);
 
         // The program will pause here until the Play icon is pressed on the Driver Station
         waitForStart();
@@ -125,10 +104,32 @@ public class FalconsTeleOpVelocity extends LinearOpMode {
             double powerY = 0.0;  // Desired power for forward/backward   (-1 to 1)
             double powerAng = 0.0;  // Desired power for turning          (-1 to 1)
 
+            if (gamepad1.left_trigger > 0.25 || gamepad2.left_trigger > 0.25) {
+                AprilTagDetection tag = null;
+                for (AprilTagDetection d : webcam.getDetectedTags()) {
+                    if (d.id == 20) {
+                        tag = d;
+                        break;
+                    }
+                }
+
+                if (tag != null) {
+                    double x = tag.ftcPose.x;
+
+                    if (Math.abs(x) > 1) {
+                        powerAng = x * 0.015;
+                    }
+                } else {
+                    powerAng = -gamepad1.right_stick_x;
+                }
+            } else {
+                powerAng = -gamepad1.right_stick_x;
+            }
+
             // Set the desired powers based on joystick inputs (-1 to 1)
             powerX = gamepad1.left_stick_x * reverse;
             powerY = -gamepad1.left_stick_y * reverse;
-            powerAng = -gamepad1.right_stick_x;
+            //powerAng = -gamepad1.right_stick_x;
 
             // Perform vector math to determine the desired powers for each wheel
             double powerLF = powerX + powerY - powerAng;
@@ -160,6 +161,8 @@ public class FalconsTeleOpVelocity extends LinearOpMode {
             } else {
                 reverse = 1;
             }
+
+
 
 
 
@@ -309,11 +312,14 @@ public class FalconsTeleOpVelocity extends LinearOpMode {
                 );
             }*/
 
+
+            webcam.update();
+            AprilTagDetection id20 = webcam.getTagBySpecificId(20);
+            webcam.displayDetectionTelemetry(id20);
+
                 telemetry.addData("servoPosition", servoTrigger.getPosition());
             telemetry.addData("voltage", voltage);
             telemetry.addData("launchRPM", motorLaunch.getVelocity());
-            drive.localizer.update();
-            telemetry.addData("pose", drive.localizer.getPose());
 
             telemetry.update();
 

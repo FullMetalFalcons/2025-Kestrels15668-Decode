@@ -1,9 +1,8 @@
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.autos;
 
 // RoadRunner Specific Imports
 
 import com.acmerobotics.dashboard.config.Config;
-import com.acmerobotics.roadrunner.Action;
 import com.acmerobotics.roadrunner.ParallelAction;
 import com.acmerobotics.roadrunner.Pose2d;
 import com.acmerobotics.roadrunner.SequentialAction;
@@ -14,41 +13,45 @@ import com.acmerobotics.roadrunner.ftc.Actions;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
+import org.firstinspires.ftc.teamcode.FalconsTeleOp;
+import org.firstinspires.ftc.teamcode.KestrelIntake;
+import org.firstinspires.ftc.teamcode.MecanumDrive;
+
 /*
   Wireless Code Download: Terminal --> "adb connect 192.168.43.1:5555"
  */
 
 @Config
 @Autonomous
-public class RedFar extends LinearOpMode {
+public class BlueFar extends LinearOpMode {
     public void runOpMode() {
-        Pose2d initialPose = new Pose2d(12,0,Math.toRadians(-90));
+        Pose2d initialPose = new Pose2d(-12,0,Math.toRadians(-90));
         MecanumDrive drive = new MecanumDrive(hardwareMap, initialPose);
         KestrelIntake intake = new KestrelIntake(hardwareMap, telemetry);
         FalconsTeleOp teleop = new FalconsTeleOp();
 
+
         TrajectoryActionBuilder preload, goto1, pickup1, launch1, park;
 
         preload = drive.actionBuilder(initialPose)
-                .strafeTo(new Vector2d(12,4))
-                .turn(Math.toRadians(-23.5));
+                .strafeTo(new Vector2d(-12,4))
+                .turn(Math.toRadians(23.5));
 
         goto1 = preload.endTrajectory().fresh()
-                .turn(Math.toRadians(23.5))
-                .strafeTo(new Vector2d(12,24))
-                .turn(Math.toRadians(90));
+                .turn(Math.toRadians(-23.5))
+                .strafeTo(new Vector2d(-12,24))
+                .turn(Math.toRadians(-90));
 
         pickup1 = goto1.endTrajectory().fresh()
-                .strafeTo(new Vector2d(49+12,24));
+                .strafeTo(new Vector2d(-49-12,24));
 
         launch1 = pickup1.endTrajectory().fresh()
-                .strafeTo(new Vector2d(12,44))
-                .turn(Math.toRadians(-90-23.5));
+                .strafeTo(new Vector2d(-12,44))
+                .turn(Math.toRadians(90+23.5));
 
         park = launch1.endTrajectory().fresh()
-                .turn(Math.toRadians(23.5))
-                .strafeTo(new Vector2d(12,72));
-
+                .turn(Math.toRadians(-23.5))
+                .strafeTo(new Vector2d(-12,72));
 
 
         waitForStart();
@@ -107,9 +110,8 @@ public class RedFar extends LinearOpMode {
                         park.build()
                 )
         );
-        //teleop.initialPose = new Pose2d(new Vector2d(12 ,50+24), Math.toRadians(-90));
-        //MecanumDrive.PARAMS.blueRun = false;
-
+        //teleop.initialPose = new Pose2d(new Vector2d(-12 ,50+24), Math.toRadians(-90));
+        //MecanumDrive.PARAMS.blueRun = true;
 
 
     }

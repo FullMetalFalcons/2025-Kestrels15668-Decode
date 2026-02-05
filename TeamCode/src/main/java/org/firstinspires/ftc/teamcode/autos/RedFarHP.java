@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.autos;
 
 // RoadRunner Specific Imports
 
@@ -13,15 +13,19 @@ import com.acmerobotics.roadrunner.ftc.Actions;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
+import org.firstinspires.ftc.teamcode.FalconsTeleOp;
+import org.firstinspires.ftc.teamcode.KestrelIntake;
+import org.firstinspires.ftc.teamcode.MecanumDrive;
+
 /*
   Wireless Code Download: Terminal --> "adb connect 192.168.43.1:5555"
  */
 
 @Config
 @Autonomous
-public class BlueFarHP extends LinearOpMode {
+public class RedFarHP extends LinearOpMode {
     public void runOpMode() {
-        Pose2d initialPose = new Pose2d(-12,0,Math.toRadians(-90));
+        Pose2d initialPose = new Pose2d(12,0,Math.toRadians(-90));
         MecanumDrive drive = new MecanumDrive(hardwareMap, initialPose);
         KestrelIntake intake = new KestrelIntake(hardwareMap, telemetry);
         FalconsTeleOp teleop = new FalconsTeleOp();
@@ -29,8 +33,8 @@ public class BlueFarHP extends LinearOpMode {
         TrajectoryActionBuilder preload, gotoHP, pickupHP, launchHP, park;
 
         preload = drive.actionBuilder(initialPose)
-                .strafeTo(new Vector2d(-12,4))
-                .turn(Math.toRadians(24.5));
+                .strafeTo(new Vector2d(12,4))
+                .turn(Math.toRadians(-24.5));
 
         /*gotoHP = preload.endTrajectory().fresh()
                 .turn(Math.toRadians(24.5))
@@ -47,8 +51,8 @@ public class BlueFarHP extends LinearOpMode {
                 .turn(Math.toRadians(-90+15-24.5));*/
 
         park = preload.endTrajectory().fresh()
-                .turn(Math.toRadians(-24.5))
-                .strafeTo(new Vector2d(12,4));
+                .turn(Math.toRadians(24.5))
+                .strafeTo(new Vector2d(-12,4));
 
 
         waitForStart();
